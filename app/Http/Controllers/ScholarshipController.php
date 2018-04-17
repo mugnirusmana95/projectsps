@@ -84,6 +84,7 @@ class ScholarshipController extends Controller
           FROM scholarships a
           where a.id=$key"
         ));
+        $data['scholarship'] = scholarship::find($key);
         $data['detail'] = scholarships_detail::where('id_scholarship',$key)->get();
         $data['termin'] = DB::select(DB::raw(
           "SELECT a.*, b.id as id_ar FROM termins a
@@ -91,6 +92,8 @@ class ScholarshipController extends Controller
           ON a.id=b.id_termin
           WHERE a.id_scholarship=$key"
         ));;
+        $data['total_pemegang'] = DB::table('scholarships_details')->select(DB::raw('sum((bpp + pengelolaan + biaya_hidup + biaya_buku + biaya_penelitian) * total_chapter) as total'))->where('id_scholarship', $key)->first();
+        $data['total_termin'] = DB::table('termins')->select(DB::raw('sum(bpp + pengelolaan) as total'))->where('id_scholarship', $key)->first();
         $data['id'] = $id;
 
         foreach ($beasiswa as $key) {
@@ -324,6 +327,7 @@ class ScholarshipController extends Controller
           ON a.id=b.id_termin
           WHERE a.id_scholarship=$key"
         ));
+        $data['total'] = DB::table('termins')->select(DB::raw('sum(bpp + pengelolaan) as total'))->where('id_scholarship', $data['scholarship']->id)->first();
         $data['id'] = $id;
 
         return view('scholarship.create_termin',$data);

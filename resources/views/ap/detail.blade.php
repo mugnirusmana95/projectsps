@@ -62,22 +62,22 @@
             <tr>
               <td>Total BPP</td>
               <td>:</td>
-              <td>Rp {{number_format($ap->bpp)}}.00,-</td>
+              <td>Rp {{number_format($ap->bpp,0,'.','.')}},-</td>
             </tr>
             <tr>
               <td>Total Pengelolaan</td>
               <td>:</td>
-              <td>Rp {{number_format($ap->pengelolaan)}}.00,-</td>
+              <td>Rp {{number_format($ap->pengelolaan,0,'.','.')}},-</td>
             </tr>
             <tr>
               <td>Total Tagihan</td>
               <td>:</td>
-              <td>Rp {{number_format($ap->tagihan)}}.00,-</td>
+              <td>Rp {{number_format($ap->tagihan,0,'.','.')}},-</td>
             </tr>
             <tr>
               <td>Total Setoran Ke ITB</td>
               <td>:</td>
-              <td>Rp {{number_format($ap->bpp)}}.00,-</td>
+              <td>Rp {{number_format($ap->bpp,0,'.','.')}},-</td>
             </tr>
             <tr>
               <td>No BPP Telah Di ITB (SP2D)</td>
@@ -121,7 +121,7 @@
             <tr>
               <td>Total Beasiswa</td>
               <td>:</td>
-              <td>Rp {{number_format($ap->arp->ar->scholarship->value)}}.00,-</td>
+              <td>Rp {{number_format($ap->arp->ar->scholarship->value,0,'.','.')}},-</td>
             </tr>
           </table>
         </div>
@@ -150,12 +150,12 @@
             <tr>
               <td>Total Beasiswa</td>
               <td>:</td>
-              <td>Rp {{number_format($ap->arp->ar->bpp)}}.00,-</td>
+              <td>Rp {{number_format($ap->arp->ar->bpp,0,'.','.')}},-</td>
             </tr>
             <tr>
               <td>Biaya Pengelolaan</td>
               <td>:</td>
-              <td>Rp {{number_format($ap->arp->ar->pengelolaan)}}.00,-</td>
+              <td>Rp {{number_format($ap->arp->ar->pengelolaan,0,'.','.')}},-</td>
             </tr>
             <tr>
               <td>Tanggal Tagihan</td>
@@ -213,13 +213,16 @@
             <thead>
               <tr>
                 <th width="1%"><center>No</center></th>
-                <th><center>NIM</center></th>
-                <th>Akhir Semester</th>
-                <th><center>Awal Semester</center></th>
-                <th><center>Jumlah SKS</center></th>
-                <th><center>Jumlah Semester</center></th>
+                <th width='10%'>Mahasiswa</th>
+                <th width="1%"><center>Sem. Awal</center></th>
+                <th width="1%"><center>Sem. Akhir</center></th>
+                <th width="1%"><center>Jml. SKS</center></th>
+                <th width="1%"><center>Jml. Sem.</center></th>
                 <th width="15%"><center>BPP</center></th>
                 <th width="15%"><center>Pengelolaan</center></th>
+                <th width="15%"><center>Biaya Hidup</center></th>
+                <th width="15%"><center>Biaya Buku</center></th>
+                <th width="15%"><center>Biaya Penelitian</center></th>
                 <th width="1%"><center>Aksi</center></th>
               </tr>
             </thead>
@@ -230,13 +233,16 @@
               @foreach ($colleger as $key)
                 <tr>
                   <td><center>{{$no++}}</center></td>
-                  <td>{{$key->nim_colleger}} - {{$key->colleger->name}}</td>
+                  <td>{{$key->nim_colleger}} - {{$key->colleger->nama_lengkap}}</td>
                   <td><center>@if($key->chapter1 == 1) Ganjil @else Genap @endif / {{$key->year1}}</center></td>
                   <td><center>@if($key->chapter2 == 1) Ganjil @else Genap @endif / {{$key->year2}}</center></td>
                   <td><center>{{$key->total_sks}}</center></td>
                   <td><center>{{$key->total_chapter}}</center></td>
-                  <td align="right">Rp {{number_format($key->bpp)}}.00,-</td>
-                  <td align="right">Rp {{number_format($key->pengelolaan)}}.00,-</td>
+                  <td align="right">Rp @if($key->bpp == null || $key->bpp ==0){{'0'}}@else{{number_format($key->bpp,0,'.','.')}}@endif,-</td>
+                  <td align="right">Rp @if($key->pengelolaan == null || $key->pengelolaan ==0){{'0'}}@else{{number_format($key->pengelolaan,0,'.','.')}}@endif,-</td>
+                  <td align='right'>Rp @if($key->biaya_hidup == null || $key->biaya_hidup ==0){{'0'}}@else{{number_format($key->biaya_hidup,0,'.','.')}}@endif,-</td>
+                  <td align='right'>Rp @if($key->biaya_buku == null || $key->biaya_buku ==0){{'0'}}@else{{number_format($key->biaya_buku,0,'.','.')}}@endif,-</td>
+                  <td align='right'>Rp @if($key->biaya_penelitian == null || $key->biaya_penelitian ==0){{'0'}}@else {{number_format($key->biaya_penelitian,0,'.','.')}}@endif,-</td>
                   <td>
                     <a href="/master/mahasiswa/lihat/{{crypt::encrypt($key->nim)}}" class="btn btn-sm btn-primary" data-toggle="tooltip" title="Lihat Data"><span class="fa fa-eye"></span></a>
                   </td>

@@ -90,6 +90,9 @@ class ApController extends Controller
           $detail->total_chapter = $key->total_chapter;
           $detail->pengelolaan = $key->pengelolaan;
           $detail->bpp = $key->bpp;
+          $detail->biaya_hidup = $key->biaya_hidup;
+          $detail->biaya_buku = $key->biaya_buku;
+          $detail->biaya_penelitian = $key->biaya_penelitian;
           $detail->nim_colleger = $key->nim_colleger;
           $detail->id_ap = $ap->id;
           $detail->save();

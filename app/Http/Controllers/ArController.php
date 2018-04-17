@@ -381,7 +381,7 @@ class ArController extends Controller
         'diterima.required' => 'Field ini wajib diisi',
         'deskripsi.required' => 'Field ini wajib diisi',
       ]);
-      
+
       $key = Crypt::decrypt($id);
       $data['invoice'] = account_receivable::find($key);
       $data['nama'] = $request->nama;

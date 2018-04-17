@@ -18,7 +18,7 @@ $(document).ready(function(){
       $('#tgl_tempo').val(value.arp.date_end)
       $('#tagihan').val(value.arp.tagihan.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."))
       $('#pengelolaan').val(value.arp.pengelolaan.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."))
-      $('#bpp').val(value.bpp.bpp.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."))
+      $('#bpp').val(value.arp.bpp.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."))
       $('#itb').val($('#bpp').val())
     });
 

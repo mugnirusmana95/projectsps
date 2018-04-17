@@ -78,7 +78,7 @@
                   <td>
                     <a href="/tagihan/lihat/{{\Crypt::encrypt($key->id)}}" class="btn btn-sm btn-primary" data-toggle="tooltip" title="Lihat Data {{$key->invoice}}" data-placement="left"><span class="fa fa-eye"></span></a>
                     <a href="/tagihan/download/{{\Crypt::encrypt($key->id)}}" class="btn btn-sm btn-success" data-toggle="tooltip" title="Download Data {{$key->invoice}}" data-placement="left"><span class="fa fa-file-excel-o"></span></a>
-                    <a href="/tagihan/invoice/cetak/{{\Crypt::encrypt($key->id)}}" class="btn btn-sm btn-info" data-toggle="tooltip" title="Print Data {{$key->invoice}}" data-placement="left" target="_blank"><span class="fa fa-print"></span></a>
+                    <a href="/tagihan/invoice/cetak/{{\Crypt::encrypt($key->id)}}" class="btn btn-sm btn-info" data-toggle="tooltip" title="Print Data {{$key->invoice}}" data-placement="left"><span class="fa fa-print"></span></a>
                     @if($key->id_ar == 0)
                     <a href="/tagihan/mahasiswa/{{\Crypt::encrypt($key->id)}}" class="btn btn-sm btn-info" data-toggle="tooltip" title="Tambah Pemegang Beasiswa {{$key->invoice}}" data-placement="left"><span class="fa fa-plus"></span></a>
                     <a href="/tagihan/ubah/{{\Crypt::encrypt($key->id)}}" class="btn btn-sm btn-warning" data-toggle="tooltip" title="Ubah Data {{$key->invoice}}" data-placement="left"><span class="fa fa-edit"></span></a>

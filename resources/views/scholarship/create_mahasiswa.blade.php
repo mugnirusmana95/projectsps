@@ -144,14 +144,14 @@
                       <td align='right'>Rp @if ($key->biaya_buku == null || $key->biaya_buku==0){{'0'}}@else{{number_format($key->biaya_buku,0,'.','.')}}@endif,-</center></td>
                       <td align='right'>Rp @if ($key->biaya_penelitian == null || $key->biaya_penelitian==0){{'0'}}@else{{number_format($key->biaya_penelitian,0,'.','.')}}@endif,-</center></td>
                       <td>
-                          <a href="/beasiswa/mahasiswa/ubah/{{crypt::encrypt($key->id)}}" class="btn btn-sm btn-warning"><span class="fa fa-edit"></span></a>
-                          <a href="/beasiswa/mahasiswa/hapus/{{crypt::encrypt($key->id)}}" class="btn btn-sm btn-danger"><span class="fa fa-trash"></span></a>
+                          <a href="/beasiswa/mahasiswa/ubah/{{crypt::encrypt($key->id)}}" class="btn btn-sm btn-warning btn-block"><span class="fa fa-edit"></span></a>
+                          <a href="/beasiswa/mahasiswa/hapus/{{crypt::encrypt($key->id)}}" class="btn btn-sm btn-danger btn-block"><span class="fa fa-trash"></span></a>
                       </td>
                     </tr>
                     @endforeach
                     <tr>
                       <td colspan="2" align="right"><h4><b>Total :</b></h4></td>
-                      <td colspan="9" align="right"><h3><b>Rp. {{number_format($total->total)}}.00,-</b></h3></td>
+                      <td colspan="9" align="right"><h3><b>Rp. {{number_format($total->total,0,'.','.')}},-</b></h3></td>
                       <td rowspan="2">
                         <div style="width:100%;min-height:110px;margin:auto;padding:auto;background-color: @if($total->total > $scholarship->value) #dd4b39 @elseif($total->total < $scholarship->value) #f39c12 @else #00c0ef @endif">
                         </div>

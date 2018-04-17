@@ -30,6 +30,58 @@
 </section>
 @endif
 
+@if($total_pemegang->total > $scholarship->value)
+<section class="content-header">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <h4><i class="icon fa fa-check"></i> Info!</h4>
+        Total Pemegang Beasiswa Melebihi Dari Total Beasiswa
+      </div>
+    </div>
+  </div>
+</section>
+@elseif($total_pemegang->total < $scholarship->value)
+<section class="content-header">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="alert alert-warning alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <h4><i class="icon fa fa-check"></i> Info!</h4>
+        Total Pemegang Beasiswa Kurang Dari Total Beasiswa
+      </div>
+    </div>
+  </div>
+</section>
+@endif
+
+@if($total_termin->total > $scholarship->value)
+<section class="content-header">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <h4><i class="icon fa fa-check"></i> Info!</h4>
+        Total Termin Melebihi Dari Total Beasiswa
+      </div>
+    </div>
+  </div>
+</section>
+@elseif($total_termin->total < $scholarship->value)
+<section class="content-header">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="alert alert-warning alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <h4><i class="icon fa fa-check"></i> Info!</h4>
+        Total Termin Kurang Dari Total Beasiswa
+      </div>
+    </div>
+  </div>
+</section>
+@endif
+
 <section class="content">
   <div class="row">
     <div class="col-md-12" style="margin-bottom:5px">
@@ -174,10 +226,10 @@
                     <td align='right'>Rp @if($key->biaya_buku == null || $key->biaya_buku ==0){{'0'}}@else{{number_format($key->biaya_buku,0,'.','.')}}@endif,-</td>
                     <td align='right'>Rp @if($key->biaya_penelitian == null || $key->biaya_penelitian ==0){{'0'}}@else{{number_format($key->biaya_penelitian)}}@endif,-</td>
                     <td>
-                      <a href="/master/mahasiswa/lihat/{{crypt::encrypt($key->nim_colleger)}}" class="btn btn-sm btn-primary" data-toggle="tooltip" title="Lihat Data"><span class="fa fa-eye"></span></a>
+                      <a href="/master/mahasiswa/lihat/{{crypt::encrypt($key->nim_colleger)}}" class="btn btn-sm btn-primary btn-block" data-toggle="tooltip" title="Lihat Data"><span class="fa fa-eye"></span></a>
                       @if($scholarship->termin==0)
-                      <a href="/beasiswa/mahasiswa/ubah/{{crypt::encrypt($key->id)}}" class="btn btn-sm btn-warning" data-toggle="tooltip" title="Ubah Data"><span class="fa fa-edit"></span></a>
-                      <a href="/beasiswa/mahasiswa/hapus/{{crypt::encrypt($key->id)}}" class="btn btn-sm btn-danger" data-toggle="tooltip" title="Hapus Data"><span class="fa fa-trash"></span></a>
+                      <a href="/beasiswa/mahasiswa/ubah/{{crypt::encrypt($key->id)}}" class="btn btn-sm btn-warning btn-block" data-toggle="tooltip" title="Ubah Data"><span class="fa fa-edit"></span></a>
+                      <a href="/beasiswa/mahasiswa/hapus/{{crypt::encrypt($key->id)}}" class="btn btn-sm btn-danger btn-block" data-toggle="tooltip" title="Hapus Data"><span class="fa fa-trash"></span></a>
                       @endif
                     </td>
                   </tr>

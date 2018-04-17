@@ -32,7 +32,7 @@
               <h4><i class="icon fa fa-check"></i> Success!</h4>
               {{Session::get('success')}}
             </div>
-          @elseif(Session::has('error'))
+            @elseif(Session::has('error'))
             <div class="alert alert-danger alert-dismissible">
               <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
               <h4><i class="icon fa fa-close"></i> Error!</h4>
@@ -49,6 +49,20 @@
               <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
               <h4><i class="icon fa fa-info-circle"></i> Info!</h4>
               Field dengan tanda (<span class="req">*</span>) wajib diisi.
+            </div>
+            @endif
+
+            @if($total->total > $scholarship->value)
+            <div class="alert alert-danger alert-dismissible">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+              <h4><i class="icon fa fa-info"></i> Info!</h4>
+              Total Termin Melebihi Dari Total Beasiswa
+            </div>
+            @elseif($total->total < $scholarship->value)
+            <div class="alert alert-warning alert-dismissible">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+              <h4><i class="icon fa fa-info"></i> Info!</h4>
+              Total Termin Kurang Dari Total Beasiswa
             </div>
             @endif
 

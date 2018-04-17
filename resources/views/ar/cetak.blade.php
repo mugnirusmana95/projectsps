@@ -68,6 +68,18 @@
                 </div>
               </div>
 
+              <div class="form-group {{$errors->has('termin') ? 'has-error' : ''}}">
+                <label for="termin" class="col-md-2 control-label">Termin</label>
+                <div class="col-md-8">
+                  <input type="text" class="form-control" id='termin' placeholder="Termin" name="termin" value="{{$ar->termin}}" readonly style="background-color:#FFF">
+                  @if ($errors->has('termin'))
+                  <span class="help-block">
+                      {{$errors->first('termin')}}
+                  </span>
+                  @endif
+                </div>
+              </div>
+
               <div class="form-group {{$errors->has('tagihan') ? 'has-error' : ''}}">
                 <label for="tagihan" class="col-md-2 control-label">Biaya Tagihan</label>
                 <div class="col-md-8">
