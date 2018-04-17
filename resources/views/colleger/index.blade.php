@@ -19,7 +19,6 @@
   <div class="row">
     <div class="col-md-12">
       <a href="/master/mahasiswa/tambah" class="btn btn-md btn-info">Tambah Mahasiswa</a>
-      <a href="#" class="btn btn-md btn-success"><span class="fa fa-table"></span> Import Excel</a>
     </div>
   </div>
 </section>
@@ -58,7 +57,7 @@
                   <th width="15%"><center>Fakultas</center></th>
                   <th width="20%"><center>Program Studi</center></th>
                   <th width="10%"><center>Status</center></th>
-                  <th width="15%"><center>Aksi</center></th>
+                  {{-- <th width="15%"><center>Aksi</center></th> --}}
                 </tr>
               </thead>
               @php
@@ -69,20 +68,12 @@
                 <tr>
                   <td><center>{{$no++}}</center></td>
                   <td><center>{{$key->nim}}</center></td>
-                  <td>{{$key->name}}</td>
-                  <td><center>@if($key->program==1)Magister @else Doctor @endif</center></td>
-                  <td>{{$key->faculty}}</td>
-                  <td>{{$key->prodi}}</td>
-                  <td>
-                    <center>
-                      @if ($key->status == 1)
-                        <label class="label label-primary">Aktif</label>
-                      @else
-                        <label class="label label-danger">Non-Aktif</label>
-                      @endif
-                    </center>
-                  </td>
-                  <td>
+                  <td>{{$key->nama_lengkap}}</td>
+                  <td><center>{{$key->strata}}</center></td>
+                  <td>{{$key->fak_id}}</td>
+                  <td>{{$key->prodi_id}}</td>
+                  <td><center>{{$key->status}}</center></td>
+                  {{-- <td>
                     <center>
                       <a href="/master/mahasiswa/lihat/{{crypt::encrypt($key->nim)}}" class="btn btn-sm btn-primary" data-toggle="tooltip" title="Open Data"><span class="fa fa-eye"></span></a>
                       <a href="/master/mahasiswa/ubah/{{crypt::encrypt($key->nim)}}" class="btn btn-sm btn-warning" data-toggle="tooltip" title="Update Data"><span class="fa fa-edit"></span></a>
@@ -92,7 +83,7 @@
                       <a href="/master/mahasiswa/aktif/{{crypt::encrypt($key->nim)}}" class="btn btn-sm btn-info" data-toggle="tooltip" title="Aktifkan Data"><span class="fa fa-check"></span></a>
                       @endif
                       <a id="delete" href="" class="btn btn-sm btn-danger" data-toggle="tooltip" title="Hapus Data"><span class="fa fa-close"></span></a>
-                    </center>
+                    </center> --}}
                   </td>
                 </tr>
                 @endforeach

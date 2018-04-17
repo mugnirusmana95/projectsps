@@ -15,9 +15,6 @@ class CollegerController extends Controller
     public function index()
     {
       $data['colleger'] = colleger::orderBy('nim')->get();
-      foreach ($data['colleger'] as $key) {
-        $data['nim'] = crypt::encrypt($key->nim);
-      }
 
       return view ('colleger.index',$data);
     }

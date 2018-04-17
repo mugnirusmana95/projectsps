@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class colleger extends Model
 {
+  protected $table = 'tbl_mahasiswa';
   protected $primaryKey = 'nim';
   public $incrementing = false;
 

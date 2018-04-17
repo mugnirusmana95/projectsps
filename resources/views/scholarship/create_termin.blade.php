@@ -76,7 +76,7 @@
               <tr>
                 <td>Total Beasiswa</td>
                 <td>:</td>
-                <td>Rp {{number_format($scholarship->value)}}.00,-</td>
+                <td>Rp {{number_format($scholarship->value,0,'.','.')}},-</td>
               </tr>
             </table>
 
@@ -105,8 +105,8 @@
                   <tr>
                     <td>{{$no++}}</td>
                     <td>{{$key->name}}</td>
-                    <td align='right'>Rp @if($key->bpp == null) 0 @else {{number_format($key->bpp)}} @endif.00,-</td>
-                    <td align='right'>Rp @if($key->pengelolaan == null) 0 @else {{number_format($key->pengelolaan)}} @endif.00,-</td>
+                    <td align='right'>Rp @if($key->bpp == null){{'0'}}@else {{number_format($key->bpp,0,'.','.')}} @endif,-</td>
+                    <td align='right'>Rp @if($key->pengelolaan == null){{'0'}}@else {{number_format($key->pengelolaan,0,'.','.')}} @endif,-</td>
                     <td><center>{{$key->date}}</center></td>
                     <td><center>{{$key->date_end}}</center></td>
                     <td>
@@ -164,8 +164,8 @@
             "<td><input type='text' class='form-control' name='nama[]' value='Termin "+sno+"' placeholder='Nama Termin' required></td>"+
             "<td><input type='text' class='form-control' id='bpp"+sno+"' name='bpp[]' placeholder='Total Beasiswa' required></td>"+
             "<td><input type='text' class='form-control' id='pengelolaan"+sno+"' name='pengelolaan[]' placeholder='Total Pengelolaan' required></td>"+
-            "<td><input type='text' class='form-control datepicker' name='tanggal[]' placeholder='Tanggal Tagihan' required readonly style='background-color:#fff'></td>"+
-            "<td><input type='text' class='form-control datepicker' name='tanggal_end[]' placeholder='Jatuh Tempo' required readonly style='background-color:#fff'></td>"+
+            "<td><input type='text' class='form-control datepicker' id='tanggal"+sno+"' name='tanggal[]' placeholder='Tanggal Tagihan' style='background-color:#fff' required></td>"+
+            "<td><input type='text' class='form-control datepicker' id='tanggal_end"+sno+"' name='tanggal_end[]' placeholder='Jatuh Tempo' style='background-color:#fff' required></td>"+
             "<td width='1%'><button data-toggle='tooltip' title='Hapus' type='button' class='btn btn-danger rButton'><span class='fa fa-trash'></span></button></td></tr>";
             $('#pTable').append(trow);
             $('.select').select2();
@@ -202,6 +202,14 @@
               rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
               return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
             }
+
+            $("#tanggal"+sno).keydown(function(event){
+              return false;
+            });
+
+            $("#tanggal_end"+sno).keydown(function(event){
+              return false;
+            });
     });
   });
 

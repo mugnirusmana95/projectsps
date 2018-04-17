@@ -123,6 +123,9 @@ class ArController extends Controller
           $detail->total_chapter = $key->total_chapter;
           $detail->pengelolaan = $key->pengelolaan;
           $detail->bpp = $key->bpp;
+          $detail->biaya_hidup = $key->biaya_hidup;
+          $detail->biaya_buku = $key->biaya_buku;
+          $detail->biaya_penelitian = $key->biaya_penelitian;
           $detail->nim_colleger = $key->nim_colleger;
           $detail->id_ar = $ar->id;
           $detail->save();//Simpan data tersebut ke table account_receivable_detail
@@ -255,6 +258,12 @@ class ArController extends Controller
           $pengelolaan1 = implode("",$pengelolaan);
           $bpp = explode(".",$request->bpp[$name]);
           $bpp1 = implode("",$bpp);
+          $hidup = explode(".",$request->hidup[$name]);
+          $hidup1 = implode("",$hidup);
+          $buku = explode(".",$request->buku[$name]);
+          $buku1 = implode("",$buku);
+          $penelitian = explode(".",$request->penelitian[$name]);
+          $penelitian1 = implode("",$penelitian);
 
           $detail = new account_receivable_detail();
           $detail->chapter1 = $request->semester1[$name];
@@ -265,6 +274,9 @@ class ArController extends Controller
           $detail->total_chapter = $request->jmlsemester[$name];
           $detail->pengelolaan = $pengelolaan1;
           $detail->bpp = $bpp1;
+          $detail->biaya_hidup = $hidup1;
+          $detail->biaya_buku = $buku1;
+          $detail->biaya_penelitian = $penelitian1;
           $detail->nim_colleger = $request->nim[$name];
           $detail->id_ar = $ar->id;
           $detail->save();
@@ -311,6 +323,12 @@ class ArController extends Controller
       $bpp1 = implode("",$bpp);
       $pengelolaan = explode(".",$request->pengelolaan);
       $pengelolaan1 = implode("",$pengelolaan);
+      $hidup = explode(".",$request->hidup);
+      $hidup1 = implode("",$hidup);
+      $buku = explode(".",$request->buku);
+      $buku1 = implode("",$buku);
+      $penelitian = explode(".",$request->penelitian);
+      $penelitian1 = implode("",$penelitian);
 
       $colleger = account_receivable_detail::find($key);
       $colleger->chapter1 = $request->chapter1;
@@ -321,6 +339,9 @@ class ArController extends Controller
       $colleger->total_chapter = $request->total_chapter;
       $colleger->bpp = $bpp1;
       $colleger->pengelolaan = $pengelolaan1;
+      $colleger->biaya_hidup = $hidup1;
+      $colleger->biaya_buku = $buku1;
+      $colleger->biaya_penelitian = $penelitian1;
       $colleger->save();
       $id = crypt::encrypt($colleger->id_ar);
 
@@ -339,9 +360,34 @@ class ArController extends Controller
       return back();
     }
 
-    public function printInvoice($id)
+    public function createInvoice($id)
     {
-      $data['invoice'] = account_receivable::find(crypt::decrypt($id));
+      $key  = Crypt::decrypt($id);
+      $data['ar'] = account_receivable::find($key);
+      $data['id'] = $id;
+      return view('ar.cetak',$data);
+    }
+
+    public function printInvoice(Request $request, $id)
+    {
+      $this->validate($request,[
+        'nama' => 'required',
+        'nip' => 'required',
+        'diterima' => 'required',
+        'deskripsi' => 'required',
+      ],[
+        'nama.required' => 'Field ini wajib diisi',
+        'nip.required' => 'Field ini wajib diisi',
+        'diterima.required' => 'Field ini wajib diisi',
+        'deskripsi.required' => 'Field ini wajib diisi',
+      ]);
+      
+      $key = Crypt::decrypt($id);
+      $data['invoice'] = account_receivable::find($key);
+      $data['nama'] = $request->nama;
+      $data['nip'] = $request->nip;
+      $data['diterima'] = $request->diterima;
+      $data['deskripsi'] = $request->deskripsi;
 
       return view('ar.print',$data);
     }
@@ -375,7 +421,7 @@ class ArController extends Controller
     {
       $data['tagihan'] = termin::find($id);
       $data['scholarship'] = scholarship::find($data['tagihan']->id_scholarship);
-      $data['bpp'] = $data['bpp'] = DB::table('scholarships_details')->select(DB::raw('sum(bpp) as bpp'))->where('id_scholarship', $data['scholarship']->id)->first();
+      $data['bpp'] = $data['tagihan']->bpp + $data['tagihan']->pengelolaan;
 
       return $data;
     }
@@ -400,16 +446,15 @@ class ArController extends Controller
     {
       $term = trim($req->q);
 
-      $student = Colleger::where('name','LIKE', '%'.$term.'%')
+      $student = Colleger::where('nama_lengkap','LIKE', '%'.$term.'%')
                           ->orWhere('nim','LIKE', '%'.$term.'%')
                           ->get()
                           ->take(20);
       $colleger = [];
 
       foreach ($student as $item) {
-          $colleger[] = ['id' => $item->nim, 'text' => $item->name];
+          $colleger[] = ['id' => $item->nim, 'text' => $item->nim.'-'.$item->nama_lengkap];
       }
-
 
       return response()->json($colleger);
     }

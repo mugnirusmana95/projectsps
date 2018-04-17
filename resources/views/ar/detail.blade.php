@@ -37,7 +37,7 @@
   <div class="row">
     <div class="col-md-12" style="margin-bottom:5px">
       <a href="/tagihan/download/{{$id}}" class="btn btn-sm btn-success" data-toggle="tooltip" title="Download Tagihan {{$ar->invoice}}" data-placement="left"><span class="fa fa-file-excel-o"></span></a>
-      <a href="/tagihan/invoice/cetak/{{$id}}" class="btn btn-sm btn-info" data-toggle="tooltip" title="Cetak Tagihan {{$ar->invoice}}" target="_blank" data-placement="left"><span class="fa fa-print"></span></a>
+      <a href="/tagihan/invoice/cetak/{{$id}}" class="btn btn-sm btn-info" data-toggle="tooltip" title="Cetak Tagihan {{$ar->invoice}}" data-placement="left"><span class="fa fa-print"></span></a>
       @if($ar->id_ar == 0)
       <a href="/tagihan/mahasiswa/{{$id}}" class="btn btn-sm btn-info" data-toggle="tooltip" title="Tambah Pemegang Beasiswa {{$ar->invoice}}" data-placement="left"><span class="fa fa-plus"></span></a>
       <a href="/tagihan/ubah/{{$id}}" class="btn btn-sm btn-warning" data-toggle="tooltip" title="Ubah Data Tagihan {{$ar->invoice}}" data-placement='left'><span class="fa fa-edit"></span></a>
@@ -69,17 +69,17 @@
             <tr>
               <td>Total BPP</td>
               <td>:</td>
-              <td>Rp {{number_format($ar->bpp)}}.00,-</td>
+              <td>Rp {{number_format($ar->bpp,0,'.','.')}},-</td>
             </tr>
             <tr>
               <td>Biaya Pengelolaan</td>
               <td>:</td>
-              <td>Rp {{number_format($ar->pengelolaan)}}.00,-</td>
+              <td>Rp {{number_format($ar->pengelolaan,0,'.','.')}},-</td>
             </tr>
             <tr>
               <td>Biaya Tagihan</td>
               <td>:</td>
-              <td>Rp {{number_format($ar->tagihan)}}.00,-</td>
+              <td>Rp {{number_format($ar->tagihan,0,'.','.')}},-</td>
             </tr>
             <tr>
               <td>Tanggal Tagihan</td>
@@ -128,7 +128,7 @@
             <tr>
               <td>Total Beasiswa</td>
               <td>:</td>
-              <td>Rp {{number_format($ar->value)}}.00,-</td>
+              <td>Rp {{number_format($ar->value,0,'.','.')}},-</td>
             </tr>
           </table>
         </div>
@@ -147,14 +147,17 @@
             <thead>
               <tr>
                 <th width="1%"><center>No</center></th>
-                <th>Mahasiswa</th>
-                <th><center>Sem. Awal</center></th>
-                <th><center>Sem. Akhir</center></th>
-                <th><center>Jml. SKS</center></th>
-                <th><center>Jml. Sem.</center></th>
+                <th width='10%'>Mahasiswa</th>
+                <th width="1%"><center>Sem. Awal</center></th>
+                <th width="1%"><center>Sem. Akhir</center></th>
+                <th width="1%"><center>Jml. SKS</center></th>
+                <th width="1%"><center>Jml. Sem.</center></th>
                 <th width="15%"><center>BPP</center></th>
                 <th width="15%"><center>Pengelolaan</center></th>
-                <th width="13%"><center>Aksi</center></th>
+                <th width="15%"><center>Biaya Hidup</center></th>
+                <th width="15%"><center>Biaya Buku</center></th>
+                <th width="15%"><center>Biaya Penelitian</center></th>
+                <th width="1%"><center>Aksi</center></th>
               </tr>
             </thead>
             @php
@@ -164,18 +167,21 @@
               @foreach ($ard as $key)
                 <tr>
                   <td><center>{{$no++}}</center></td>
-                  <td>{{$key->nim_colleger}} - {{$key->colleger->name}}</td>
+                  <td>{{$key->nim_colleger}} - {{$key->colleger->nama_lengkap}}</td>
                   <td><center>@if($key->chapter1 == 1) Ganjil @else Genap @endif / {{$key->year1}}</center></td>
                   <td><center>@if($key->chapter2 == 1) Ganjil @else Genap @endif / {{$key->year2}}</center></td>
                   <td><center>{{$key->total_sks}}</center></td>
                   <td><center>{{$key->total_chapter}}</center></td>
-                  <td align="right">Rp {{number_format($key->bpp)}}.00,-</td>
-                  <td align="right">Rp {{number_format($key->pengelolaan)}}.00,-</td>
+                  <td align="right">Rp @if($key->bpp == null || $key->bpp ==0){{'0'}}@else{{number_format($key->bpp,0,'.','.')}}@endif,-</td>
+                  <td align="right">Rp @if($key->pengelolaan == null || $key->pengelolaan ==0){{'0'}}@else{{number_format($key->pengelolaan,0,'.','.')}}@endif,-</td>
+                  <td align='right'>Rp @if($key->biaya_hidup == null || $key->biaya_hidup ==0){{'0'}}@else{{number_format($key->biaya_hidup,0,'.','.')}}@endif,-</td>
+                  <td align='right'>Rp @if($key->biaya_buku == null || $key->biaya_buku ==0){{'0'}}@else{{number_format($key->biaya_buku,0,'.','.')}}@endif,-</td>
+                  <td align='right'>Rp @if($key->biaya_penelitian == null || $key->biaya_penelitian ==0){{'0'}}@else {{number_format($key->biaya_penelitian,0,'.','.')}}@endif,-</td>
                   <td>
-                    <a href="/master/mahasiswa/lihat/{{crypt::encrypt($key->nim)}}" class="btn btn-sm btn-primary" data-toggle="tooltip" title="Lihat Data"><span class="fa fa-eye"></span></a>
+                    <a href="/master/mahasiswa/lihat/{{crypt::encrypt($key->nim)}}" class="btn btn-sm btn-block btn-primary" data-toggle="tooltip" title="Lihat Data"><span class="fa fa-eye"></span></a>
                     @if($ar->id_ar == 0)
-                    <a href="/tagihan/mahasiswa/ubah/{{\Crypt::encrypt($key->id)}}" class="btn btn-sm btn-warning" data-toggle="tooltip" title="Ubah Data"><span class="fa fa-edit"></span></a>
-                    <a href="/tagihan/mahasiswa/hapus/{{\Crypt::encrypt($key->id)}}" class="btn btn-sm btn-danger" data-toggle="tooltip" title="Hapus Data"><span class="fa fa-trash"></span></a>
+                    <a href="/tagihan/mahasiswa/ubah/{{\Crypt::encrypt($key->id)}}" class="btn btn-sm btn-block btn-warning" data-toggle="tooltip" title="Ubah Data"><span class="fa fa-edit"></span></a>
+                    <a href="/tagihan/mahasiswa/hapus/{{\Crypt::encrypt($key->id)}}" class="btn btn-sm btn-block btn-danger" data-toggle="tooltip" title="Hapus Data"><span class="fa fa-trash"></span></a>
                     @endif
                   </td>
                 </tr>

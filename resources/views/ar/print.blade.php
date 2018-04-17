@@ -21,22 +21,22 @@ Invoice_{{$invoice->invoice}}
   <tr>
     <td width="20%">Sudah terima dari</td>
     <td width="2%">:</td>
-    <td>Kuasa Pengguna Anggaran Direktorat Jenderal Sumber Daya Ilmu Pengetahuan, Teknologi, dan Pendidikan Tinggi</td>
+    <td>{{$diterima}}</td>
   </tr>
   <tr>
     <td>Jumlah uang</td>
     <td>:</td>
-    <td><b>Rp. {{number_format($invoice->bpp,0,'.','.')}},-</b></td>
+    <td><b>Rp. {{number_format($invoice->tagihan,0,'.','.')}},-</b></td>
   </tr>
   <tr>
     <td>Terbilang</td>
     <td>:</td>
-    <td><b>{{terbilang($invoice->bpp)}} rupiah</b></td>
+    <td><b>{{terbilang($invoice->tagihan)}} rupiah</b></td>
   </tr>
   <tr>
     <td>Untuk Pembayaran</td>
     <td>:</td>
-    <td>Penyaluran Bantuan Perpanjangan Studi Program Doktor (S3) bagi Penerima Beasiswa Pendidikan Pascasarjana Dalam Negeri (BPP-DN) Angkatan 2014 Tahun Anggaran 2017, Sesuai dengan Kontrak Nomor 1777.3/D3/PG/2017, Tanggal 19 September 2017</td>
+    <td>{{$deskripsi}}</td>
   </tr>
 </table>
 
@@ -47,7 +47,7 @@ Invoice_{{$invoice->invoice}}
   <tr>
     <td>
       <hr class="hr">
-      <b>Rp. {{number_format($invoice->bpp,0,'.','.')}},-</b>
+      <b>Rp. {{number_format($invoice->tagihan,0,'.','.')}},-</b>
       <hr class="hr">
     </td>
   </tr>
@@ -68,8 +68,8 @@ Invoice_{{$invoice->invoice}}
       <br>
       <br>
       <br>
-      <b>Prof. Pudji Astuti, MS</b><br>
-      <b>NIP 19610401 198601 2 001</b>
+      <b>{{$nama}}</b><br>
+      <b>{{$nip}}</b>
     </td>
   </tr>
 </table>

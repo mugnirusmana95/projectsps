@@ -182,9 +182,9 @@ class ScholarshipController extends Controller
       try {
         $data['scholarship'] = scholarship::find(crypt::decrypt($id));
         $data['id'] = crypt::encrypt($data['scholarship']->id);
-        $data['colleger'] = colleger::orderBy('name','ASC')->get();
+//        $data['colleger'] = colleger::orderBy('nama_lengkap','ASC')->get();
         $data['colleger2'] = scholarships_detail::where('id_scholarship',$data['scholarship']->id)->get();
-        $data['total'] = DB::table('scholarships_details')->select(DB::raw('sum((bpp + pengelolaan) * total_chapter) as total'))->where('id_scholarship', $data['scholarship']->id)->first();
+        $data['total'] = DB::table('scholarships_details')->select(DB::raw('sum((bpp + pengelolaan + biaya_hidup + biaya_buku + biaya_penelitian) * total_chapter) as total'))->where('id_scholarship', $data['scholarship']->id)->first();
 
         return view('scholarship.create_mahasiswa',$data);
       } catch (DecryptException $e) {
@@ -205,6 +205,12 @@ class ScholarshipController extends Controller
           $bpp1 = implode("",$bpp);
           $pengelolaan = explode(".",$request->pengelolaan[$name]);
           $pengelolaan1 = implode("",$pengelolaan);
+          $hidup = explode(".",$request->hidup[$name]);
+          $hidup1 = implode("",$hidup);
+          $buku = explode(".",$request->buku[$name]);
+          $buku1 = implode("",$buku);
+          $penelitian = explode(".",$request->penelitian[$name]);
+          $penelitian1 = implode("",$penelitian);
 
           $detail = new scholarships_detail();
           $detail->chapter1 = $request->semester1[$name];
@@ -213,8 +219,11 @@ class ScholarshipController extends Controller
           $detail->year2 = $request->tahun2[$name];
           $detail->total_sks = $request->jmlsks[$name];
           $detail->total_chapter = $request->jmlsemester[$name];
-          $detail->pengelolaan = $pengelolaan1;
           $detail->bpp = $bpp1;
+          $detail->pengelolaan = $pengelolaan1;
+          $detail->biaya_hidup = $hidup1;
+          $detail->biaya_buku = $buku1;
+          $detail->biaya_penelitian = $penelitian1;
           $detail->nim_colleger = $request->nim[$name];
           $detail->id_scholarship = $scholarship->id;
           $detail->save();
@@ -266,6 +275,12 @@ class ScholarshipController extends Controller
       $bpp1 = implode("",$bpp);
       $pengelolaan = explode(".",$request->pengelolaan);
       $pengelolaan1 = implode("",$pengelolaan);
+      $hidup = explode(".",$request->hidup);
+      $hidup1 = implode("",$hidup);
+      $buku = explode(".",$request->buku);
+      $buku1 = implode("",$buku);
+      $penelitian = explode(".",$request->penelitian);
+      $penelitian1 = implode("",$penelitian);
 
       $colleger = scholarships_detail::find($key);
       $colleger->chapter1 = $request->chapter1;
@@ -276,8 +291,11 @@ class ScholarshipController extends Controller
       $colleger->total_chapter = $request->total_chapter;
       $colleger->bpp = $bpp1;
       $colleger->pengelolaan = $pengelolaan1;
+      $colleger->biaya_hidup = $hidup1;
+      $colleger->biaya_buku = $buku1;
+      $colleger->biaya_penelitian = $penelitian1;
       $colleger->save();
-      $id = crypt::encrypt($colleger->id_ar);
+      $id = crypt::encrypt($colleger->id_scholarship);
 
       Session::flash('success','Data berhasil diupdate.');
 
@@ -425,7 +443,6 @@ class ScholarshipController extends Controller
           $sheet->loadView('scholarship.excel',$data);
         });
       })->export('xls');
-
     }
 
     public function searchMahasiswa($nim)
@@ -458,15 +475,32 @@ class ScholarshipController extends Controller
       if (count($bpp_prodi) > 0) {
         $bpp = $bpp_prodi->bpp;
       } else {
-        $bpp = 0;
+        $bpp = '';
       }
 
-      if($sks == 0) {
+      if($sks == 0 || $sks==null) {
         $total = number_format(($bpp / 2),0,'.','.');
       } else {
         $total = number_format($bpp,0,'.','.');
       }
 
       return $total;
+    }
+
+    public function findStudent(Request $req)
+    {
+      $term = trim($req->q);
+
+      $student = Colleger::where('nama_lengkap','LIKE', '%'.$term.'%')
+                          ->orWhere('nim','LIKE', '%'.$term.'%')
+                          ->get()
+                          ->take(20);
+      $colleger = [];
+
+      foreach ($student as $item) {
+          $colleger[] = ['id' => $item->nim, 'text' => $item->nim.' '.$item->nama_lengkap];
+      }
+
+      return response()->json($colleger);
     }
 }

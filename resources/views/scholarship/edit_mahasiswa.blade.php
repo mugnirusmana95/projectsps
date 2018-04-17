@@ -55,7 +55,7 @@
             <div class="form-group {{$errors->has('nim') ? 'has-error' : ''}}">
               <label for="nim" class="col-md-2 control-label">NIM/NAMA <span class="req">*</span></label>
               <div class="col-md-8">
-                <input type="text" class="form-control" id='nim' placeholder="NIM / NAMA" name="nim" value="{{$colleger->nim_colleger}} / {{$colleger->colleger->name}}" readonly style="background-color:#fff">
+                <input type="text" class="form-control" id='nim' placeholder="NIM / NAMA" name="nim" value="{{$colleger->nim_colleger}} {{$colleger->colleger->nama_lengkap}}" readonly style="background-color:#fff">
                 @if ($errors->has('nim'))
                 <span class="help-block">
                     {{$errors->first('nim')}}
@@ -145,7 +145,7 @@
             <div class="form-group {{$errors->has('bpp') ? 'has-error' : ''}}">
               <label for="bpp" class="col-md-2 control-label">BPP</label>
               <div class="col-md-8">
-                <input type="text" class="form-control" id='bpp' placeholder="BPP" name="bpp" value="{{number_format($colleger->bpp,0,'.','.')}}">
+                <input type="text" class="form-control" id='bpp' placeholder="BPP" name="bpp" value="@if($colleger->bpp>0){{number_format($colleger->bpp,0,'.','.')}}@endif">
                 @if ($errors->has('bpp'))
                 <span class="help-block">
                     {{$errors->first('bpp')}}
@@ -157,10 +157,46 @@
             <div class="form-group {{$errors->has('pengelolaan') ? 'has-error' : ''}}">
               <label for="pengelolaan" class="col-md-2 control-label">Pengelolaan</label>
               <div class="col-md-8">
-                <input type="text" class="form-control" id='pengelolaan' placeholder="Jumlah Semester" name="pengelolaan" value="{{number_format($colleger->pengelolaan,0,'.','.')}}">
+                <input type="text" class="form-control" id='pengelolaan' placeholder="Jumlah Semester" name="pengelolaan" value="@if($colleger->pengelolaan>0){{number_format($colleger->pengelolaan,0,'.','.')}}@endif">
                 @if ($errors->has('pengelolaan'))
                 <span class="help-block">
                     {{$errors->first('pengelolaan')}}
+                </span>
+                @endif
+              </div>
+            </div>
+
+            <div class="form-group {{$errors->has('hidup') ? 'has-error' : ''}}">
+              <label for="hidup" class="col-md-2 control-label">Biaya Hidup</label>
+              <div class="col-md-8">
+                <input type="text" class="form-control" id='hidup' placeholder="Biaya Hidup" name="hidup" value="@if($colleger->biaya_hidup>0){{number_format($colleger->biaya_hidup,0,'.','.')}}@endif">
+                @if ($errors->has('hidup'))
+                <span class="help-block">
+                    {{$errors->first('hidup')}}
+                </span>
+                @endif
+              </div>
+            </div>
+
+            <div class="form-group {{$errors->has('buku') ? 'has-error' : ''}}">
+              <label for="buku" class="col-md-2 control-label">Biaya Buku</label>
+              <div class="col-md-8">
+                <input type="text" class="form-control" id='buku' placeholder="Biaya Buku" name="buku" value="@if($colleger->biaya_buku>0){{number_format($colleger->biaya_buku,0,'.','.')}}@endif">
+                @if ($errors->has('buku'))
+                <span class="help-block">
+                    {{$errors->first('buku')}}
+                </span>
+                @endif
+              </div>
+            </div>
+
+            <div class="form-group {{$errors->has('penelitian') ? 'has-error' : ''}}">
+              <label for="penelitian" class="col-md-2 control-label">Biaya Penelitian</label>
+              <div class="col-md-8">
+                <input type="text" class="form-control" id='penelitian' placeholder="Biaya Penelitian" name="penelitian" value="@if($colleger->biaya_penelitian>0){{number_format($colleger->biaya_penelitian,0,'.','.')}}@endif">
+                @if ($errors->has('penelitian'))
+                <span class="help-block">
+                    {{$errors->first('penelitian')}}
                 </span>
                 @endif
               </div>
@@ -200,6 +236,24 @@ $(document).ready(function(){
   pengelolaan.addEventListener('keyup', function(e)
   {
     pengelolaan.value = formatRupiah(this.value);
+  });
+
+  var hidup = document.getElementById('hidup');
+  hidup.addEventListener('keyup', function(e)
+  {
+    hidup.value = formatRupiah(this.value);
+  });
+
+  var buku = document.getElementById('buku');
+  buku.addEventListener('keyup', function(e)
+  {
+    buku.value = formatRupiah(this.value);
+  });
+
+  var penelitian = document.getElementById('penelitian');
+  penelitian.addEventListener('keyup', function(e)
+  {
+    penelitian.value = formatRupiah(this.value);
   });
 
   function formatRupiah(angka, prefix)

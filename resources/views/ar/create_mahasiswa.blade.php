@@ -14,6 +14,7 @@
   <ol class="breadcrumb">
     <li><a href="/"><i class="fa fa-dashboard"></i> Dashboard</a></li>
     <li><a href="/tagihan"> Tagihan Beasiswa</a></li>
+    <li><a href="/tagihan/lihat/{{$id}}"> Detail Tagihan Beasiswa</a></li>
     <li class="active"> Tambah Mahasiswa</li>
   </ol>
 </section>
@@ -85,7 +86,7 @@
           <tr>
             <td>Total Beasiswa</td>
             <td>:</td>
-            <td>Rp {{number_format($ar->Scholarship->value)}}.00,-</td>
+            <td>Rp {{number_format($ar->Scholarship->value,0,'.','.')}},-</td>
           </tr>
         </table>
       </div>
@@ -109,12 +110,12 @@
             <tr>
               <td>Total Tagihan</td>
               <td>:</td>
-              <td>Rp {{number_format($ar->tagihan)}}.00,-</td>
+              <td>Rp {{number_format($ar->tagihan,0,'.','.')}},-</td>
             </tr>
             <tr>
               <td>Total Pengelolaan</td>
               <td>:</td>
-              <td>Rp {{number_format($ar->pengelolaan)}}.00,-</td>
+              <td>Rp {{number_format($ar->pengelolaan,0,'.','.')}},-</td>
             </tr>
             <tr>
               <td>Tanggal Tagihan</td>
@@ -143,14 +144,17 @@
                 <thead>
                   <tr>
                     <th width="1%"><center>No</center></th>
-                    <th>Mahasiswa</th>
-                    <th width="10%"><center>Sem. Awal Beasiswa</center></th>
-                    <th width="10%"><center>Sem. Akhir Beasiswa</center></th>
-                    <th width="6%"><center>Jml. SKS</center></th>
-                    <th width="6%"><center>Jml. Sem.</center></th>
+                    <th width='10%'>Mahasiswa</th>
+                    <th width="1%"><center>Sem. Awal</center></th>
+                    <th width="1%"><center>Sem. Akhir</center></th>
+                    <th width="1%"><center>Jml. SKS</center></th>
+                    <th width="1%"><center>Jml. Sem.</center></th>
                     <th width="15%"><center>BPP</center></th>
                     <th width="15%"><center>Pengelolaan</center></th>
-                    <th width="10%"><center>Aksi</center></th>
+                    <th width="15%"><center>Biaya Hidup</center></th>
+                    <th width="15%"><center>Biaya Buku</center></th>
+                    <th width="15%"><center>Biaya Penelitian</center></th>
+                    <th width="1%"><center>Aksi</center></th>
                   </tr>
                 </thead>
                 @php
@@ -160,16 +164,19 @@
                   @foreach ($ard as $key)
                     <tr>
                       <td><center>{{$no++}}</center></td>
-                      <td>{{$key->nim_colleger}} - {{$key->colleger->name}}</td>
-                      <td><center>@if($key->chapter1 == 1) Ganjil @else Genap @endif / {{$key->year1}}</center></td>
-                      <td><center>@if($key->chapter2 == 1) Ganjil @else Genap @endif / {{$key->year2}}</center></td>
+                      <td>{{$key->nim_colleger}} - {{$key->colleger->nama_lengkap}}</td>
+                      <td><center>@if($key->chapter1 == 1) Gj @else Gn @endif / {{$key->year1}}</center></td>
+                      <td><center>@if($key->chapter2 == 1) Gn @else Gj @endif / {{$key->year2}}</center></td>
                       <td><center>{{$key->total_sks}}</center></td>
                       <td><center>{{$key->total_chapter}}</center></td>
-                      <td align="right">Rp @if ($key->bpp == null) 0 @else {{number_format($key->bpp)}} @endif.00,-</td>
-                      <td align='right'>Rp @if ($key->pengelolaan == null) 0 @else {{number_format($key->pengelolaan)}} @endif.00,-</center></td>
+                      <td align="right">Rp @if ($key->bpp == null || $key->bpp==0){{'0'}}@else{{number_format($key->bpp,0,'.','.')}}@endif,-</td>
+                      <td align='right'>Rp @if ($key->pengelolaan == null || $key->pengelolaan==0){{'0'}}@else{{number_format($key->pengelolaan,0,'.','.')}}@endif,-</center></td>
+                      <td align='right'>Rp @if ($key->biaya_hidup == null || $key->biaya_hidup==0){{'0'}}@else{{number_format($key->biaya_hidup,0,'.','.')}}@endif,-</center></td>
+                      <td align='right'>Rp @if ($key->biaya_buku == null || $key->biaya_buku==0){{'0'}}@else{{number_format($key->biaya_buku,0,'.','.')}}@endif,-</center></td>
+                      <td align='right'>Rp @if ($key->biaya_penelitian == null || $key->biaya_penelitian==0){{'0'}}@else{{number_format($key->biaya_penelitian,0,'.','.')}}@endif,-</center></td>
                       <td>
-                        <a href="" class="btn btn-sm btn-warning"><span class="fa fa-edit"></span></a>
-                        <a href="/tagihan/mahasiswa/hapus/{{crypt::encrypt($key->id)}}" class="btn btn-sm btn-danger"><span class="fa fa-trash"></span></a>
+                        <a href="/tagihan/mahasiswa/ubah/{{\crypt::encrypt($key->id)}}" class="btn btn-sm btn-block btn-warning"><span class="fa fa-edit"></span></a>
+                        <a href="/tagihan/mahasiswa/hapus/{{crypt::encrypt($key->id)}}" class="btn btn-sm btn-block btn-danger"><span class="fa fa-trash"></span></a>
                       </td>
                     </tr>
                   @endforeach
@@ -182,20 +189,23 @@
                 <theader>
                   <tr>
                     <th width="1%" rowspan="2"><center>No</center></th>
-                    <th width="20%" rowspan="2">Mahasiswa <span class="req">*</span></th>
-                    <th colspan="2"><center>Awal</center></th>
-                    <th colspan="2"><center>Akhir</center></th>
+                    <th width="15%" rowspan="2">Mahasiswa <span class="req">*</span></th>
+                    <th colspan="2"><center>Awal Beasiswa</center></th>
+                    <th colspan="2"><center>Akhir Beasiswa</center></th>
                     <th width="6%" rowspan="2"><center>Jml. SKS</center></th>
                     <th width="5%" rowspan="2"><center>Jml. Sem.</center></th>
                     <th rowspan="2"><center>BPP</center></th>
                     <th rowspan="2"><center>Pengelolaan</center></th>
+                    <th rowspan="2"><center>Biaya Hidup</center></th>
+                    <th rowspan="2"><center>Biaya Buku</center></th>
+                    <th rowspan="2"><center>Biaya Penelitian</center></th>
                     <th width="1%" rowspan="2"><center>Aksi</center></th>
                   </tr>
                   <tr>
-                    <th width="5%"><center>Semester<span class="req">*</span></center></th>
-                    <th width="8%"><center>Tahun <span class="req">*</span></center></th>
-                    <th width="5%"><center>Semester<span class="req">*</span></center></th>
-                    <th width="8%"><center>Tahun<span class="req">*</span></center></th>
+                    <th width="8%"><center>Sem.<span class="req">*</span></center></th>
+                    <th width="7%"><center>Thn.<span class="req">*</span></center></th>
+                    <th width="8%"><center>Sem.<span class="req">*</span></center></th>
+                    <th width="7%"><center>Thn.<span class="req">*</span></center></th>
                   </tr>
                 </theader>
                 <tbody>
@@ -214,6 +224,9 @@
                     <button type="reset" class="btn btn-default">Reset</button>
                     <button type="submit" class="btn btn-info">Simpan</button>
                   </td>
+                </tr>
+                <tr>
+                  <td>Catatan :&nbsp;&nbsp;1. Gj=Ganjil;&nbsp;&nbsp;2. Gn=Genap;&nbsp;&nbsp;3. Jml=Jumlah;&nbsp;&nbsp;4. Sem=Semester;&nbsp;&nbsp;</td>
                 </tr>
               </tbody>
             </table>
@@ -243,36 +256,35 @@
     var sno=$('#pTable tr').length-1; //length+1;
     //Menghilangkan tombol tambah data
     trow =  "<tr><td width='1%'><center>"+sno+"</center></td>"+
-            "<td width='20%'><select class='form-control select' name='nim[]' id='nim"+sno+"' required>"+
-            // "<option></option>"+
-            // "@foreach($colleger as $key)"+
-            // "<option value='{{$key->nim}}'>{{$key->nim}} - {{$key->name}}</option>"+
-            // "@endforeach"+
+            "<td><select class='form-control select' name='nim[]' id='nim"+sno+"' required>"+
             "</select></td>"+
-            "<td width='10%'>"+
+            "<td>"+
             "<select class='form-control' name='semester1[]' required>"+
-            "<option value='1'>Ganjil</option>"+
-            "<option value='2'>Genap</option>"+
+            "<option value='1'>Gj</option>"+
+            "<option value='2'>Gn</option>"+
             "</select>"+
             "</td>"+
-            "<td><input type='text' class='form-control' name='tahun1[]' required></td>"+
-            "<td width='10%'>"+
+            "<td><input type='text' class='form-control' name='tahun1[]' minlength='4' maxlength='4' required></td>"+
+            "<td>"+
             "<select class='form-control' name='semester2[]' required>"+
-            "<option value='1'>Ganjil</option>"+
-            "<option value='2'>Genap</option>"+
+            "<option value='1'>Gj</option>"+
+            "<option value='2'>Gn</option>"+
             "</select>"+
             "</td>"+
-            "<td><input type='text' class='form-control' name='tahun2[]' required></td>"+
+            "<td><input type='text' class='form-control' name='tahun2[]' minlength='4' maxlength='4' required></td>"+
             "<td><input type='text' class='form-control' name='jmlsks[]' id='sks"+sno+"'></td>"+
             "<td><input type='text' class='form-control' name='jmlsemester[]'></td>"+
-            "<td><input type='text' class='form-control' id='bpp"+sno+"' name='bpp[]'></td>"+
-            "<td><input type='text' class='form-control' id='pengelolaan"+sno+"' name='pengelolaan[]' value='@if($scholarship->bpp==null || $scholarship->bpp==0)0 @else{{number_format($scholarship->bpp,0,'.','.')}} @endif'></td>"+
+            "<td><input type='text' class='form-control' name='bpp[]' id='bpp"+sno+"' value=''></td>"+
+            "<td><input type='text' class='form-control' name='pengelolaan[]' id='pengelolaan"+sno+"' value='@if($scholarship->bpp>0){{number_format($scholarship->bpp,0,'.','.')}}@endif'></td>"+
+            "<td><input type='text' class='form-control' name='hidup[]' id='hidup"+sno+"' value=''></td>"+
+            "<td><input type='text' class='form-control' name='buku[]' id='buku"+sno+"' value=''></td>"+
+            "<td><input type='text' class='form-control' name='penelitian[]' id='penelitian"+sno+"' value=''></td>"+
             "<td width='1%'><button data-toggle='tooltip' title='Hapus' type='button' class='btn btn-danger rButton'><span class='fa fa-trash'></span></button></td></tr>";
             $('#pTable').append(trow);
             $('.select').select2({
               placeholder: "Pilih Mahasiswa",
               ajax: {
-                  url: '{{ route('admin.find.student') }}',
+                  url: '{{ route('ar.find.student') }}',
                   dataType: 'json',
                   data: function (params) {
                     return {
@@ -299,6 +311,24 @@
               pengelolaan.value = formatRupiah(this.value);
             });
 
+            var hidup = document.getElementById('hidup'+sno);
+            hidup.addEventListener('keyup', function(e)
+            {
+              hidup.value = formatRupiah(this.value);
+            });
+
+            var buku = document.getElementById('buku'+sno);
+            buku.addEventListener('keyup', function(e)
+            {
+              buku.value = formatRupiah(this.value);
+            });
+
+            var penelitian = document.getElementById('penelitian'+sno);
+            penelitian.addEventListener('keyup', function(e)
+            {
+              penelitian.value = formatRupiah(this.value);
+            });
+
             function formatRupiah(angka, prefix)
             {
               var number_string = angka.replace(/[^,\d]/g, '').toString(),
@@ -320,7 +350,7 @@
               var val = $(this).val();
 
               $.get("/beasiswa/mahasiswa/search/"+val, function(response3){
-                $('#bpp'+sno).val(response3)
+                $('#bpp'+sno).val(reponse3)
               });
             });
 
