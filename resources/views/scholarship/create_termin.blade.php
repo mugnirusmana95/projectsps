@@ -104,7 +104,7 @@
                   <tr>
                     <th width="1%"><center>No</center></th>
                     <th>Nama Termin <span class="req">*</span></th>
-                    <th width="17%"><center>Total Beasiswa <span class="req">*</span></center></th>
+                    <th width="17%"><center>Total BPP <span class="req">*</span></center></th>
                     <th width="17%"><center>Total Pengelolaan <span class="req">*</span></center></th>
                     <th width="15%"><center>Tanggal Tagihan <span class="req">*</span></center></th>
                     <th width="15%"><center>Jatuh Tempo <span class="req">*</span></center></th>
@@ -117,10 +117,10 @@
                 <tbody>
                   @foreach ($termin as $key)
                   <tr>
-                    <td>{{$no++}}</td>
+                    <td><center>{{$no++}}</center></td>
                     <td>{{$key->name}}</td>
-                    <td align='right'>Rp @if($key->bpp == null){{'0'}}@else {{number_format($key->bpp,0,'.','.')}} @endif,-</td>
-                    <td align='right'>Rp @if($key->pengelolaan == null){{'0'}}@else {{number_format($key->pengelolaan,0,'.','.')}} @endif,-</td>
+                    <td align='right'>Rp @if($key->bpp == null){{'0'}}@else{{number_format($key->bpp,0,'.','.')}}@endif,-</td>
+                    <td align='right'>Rp @if($key->pengelolaan == null){{'0'}}@else{{number_format($key->pengelolaan,0,'.','.')}}@endif,-</td>
                     <td><center>{{$key->date}}</center></td>
                     <td><center>{{$key->date_end}}</center></td>
                     <td>

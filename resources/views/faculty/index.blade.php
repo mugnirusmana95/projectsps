@@ -15,14 +15,6 @@
   </ol>
 </section>
 
-<section class="content-header">
-  <div class="row">
-    <div class="col-md-12">
-      <a href="/master/fakultas/tambah" class="btn btn-sm btn-info">Tambah Fakultas</a>
-    </div>
-  </div>
-</section>
-
 <section class="content">
   <div class="row">
     <div class="col-xs-12">
@@ -51,8 +43,9 @@
               <thead>
                 <tr>
                   <th width="1%"><center>No</center></th>
-                  <th>Nama</th>
-                  <th width="20%"><center>Aksi</center></th>
+                  <th>ID Fakultas</th>
+                  <th>Nama Fakultas</th>
+                  <th>Kode PT</th>
                 </tr>
               </thead>
               @php
@@ -62,15 +55,9 @@
                 @foreach ($faculty as $key)
                 <tr>
                   <td><center>{{$no++}}</center></td>
-                  <td>{{$key->name}}</td>
-                  <td>
-                    <center>
-                      <a href="/master/fakultas/detail/{{crypt::encrypt($key->id)}}" class="btn btn-sm btn-primary" data-toggle="tooltip" title="Lihat Data"><span class="fa fa-eye"></span></a>
-                      <a href="/master/fakultas/ubah/{{crypt::encrypt($key->id)}}" class="btn btn-sm btn-warning" data-toggle="tooltip" title="Ubah Data"><span class="fa fa-edit"></span></a>
-                      <a href="/master/fakultas/hapus/{{crypt::encrypt($key->id)}}" class="btn btn-sm btn-danger" data-toggle="tooltip" title="Hapus Data"><span class="fa fa-trash"></span></a>
-                      <a href="/master/fakultas/program_studi/{{crypt::encrypt($key->id)}}" class="btn btn-sm btn-info" data-toggle="tooltip" title="Tambah Program Studi"><span class="fa fa-plus"></span></a>
-                    </center>
-                  </td>
+                  <td>{{$key->fak_id}}</td>
+                  <td>{{$key->nama_fakultas}}</td>
+                  <td><center>{{$key->kode_pt}}</center></td>
                 </tr>
                 @endforeach
               </tbody>

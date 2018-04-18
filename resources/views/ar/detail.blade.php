@@ -72,12 +72,12 @@
               <td>Rp {{number_format($ar->bpp,0,'.','.')}},-</td>
             </tr>
             <tr>
-              <td>Biaya Pengelolaan</td>
+              <td>Total Pengelolaan</td>
               <td>:</td>
               <td>Rp {{number_format($ar->pengelolaan,0,'.','.')}},-</td>
             </tr>
             <tr>
-              <td>Biaya Tagihan</td>
+              <td>Total Tagihan</td>
               <td>:</td>
               <td>Rp {{number_format($ar->tagihan,0,'.','.')}},-</td>
             </tr>

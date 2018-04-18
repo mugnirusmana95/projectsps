@@ -14,18 +14,14 @@ class BppprodiController extends Controller
 {
     public function index()
     {
-      $data['bpp'] = bpp_prodi::orderBy('year','DESC')->orderBy('prodi','ASC')->get();
-
-      foreach ($data['bpp'] as $key) {
-        $data['id'] = crypt::encrypt($key->id);
-      }
+      $data['bpp'] = bpp_prodi::with('prody')->orderBy('year','DESC')->orderBy('prodi_id','ASC')->get();
 
       return view('bppp.index',$data);
     }
 
     public function create()
     {
-      $data['prodi'] = studie::orderBy('name')->get();
+      $data['prodi'] = studie::orderBy('nama_prodi')->get();
       $data['year'] = date('Y');
       $data['year2'] = $data['year']-20;
 
@@ -58,7 +54,7 @@ class BppprodiController extends Controller
         $bpp = explode(".",$request->bpp);
         $bpp1 = implode("",$bpp);
 
-        $bppp->prodi = $request->prodi;
+        $bppp->prodi_id = $request->prodi;
         $bppp->year = $request->year;
         $bppp->bpp = $bpp1;
         $bppp->save();

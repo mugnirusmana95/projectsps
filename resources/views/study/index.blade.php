@@ -15,14 +15,6 @@
   </ol>
 </section>
 
-<section class="content-header">
-  <div class="row">
-    <div class="col-md-12">
-      <a href="/master/program_studi/tambah" class="btn btn-sm btn-info">Tambah Program Studi</a>
-    </div>
-  </div>
-</section>
-
 <section class="content">
   <div class="row">
     <div class="col-xs-12">
@@ -51,9 +43,9 @@
               <thead>
                 <tr>
                   <th width="1%"><center>No</center></th>
-                  <th>Nama</th>
-                  <th width="40%">Fakultas</th>
-                  <th width="10%"><center>Aksi</center></th>
+                  <th><center>Nama Prodi</center></th>
+                  <th width="20%"><center>Strata</center></th>
+                  <th width="40%"><center>Fakultas</center></th>
                 </tr>
               </thead>
               @php
@@ -63,14 +55,9 @@
                 @foreach ($study as $key)
                 <tr>
                   <td><center>{{$no++}}</center></td>
-                  <td>{{$key->name}}</td>
-                  <td>{{$key->faculty->name}}</td>
-                  <td>
-                    <center>
-                      <a href="/master/program_studi/ubah/{{$id}}" class="btn btn-sm btn-warning" data-toggle="tooltip" title="Ubah Data"><span class="fa fa-edit"></span></a>
-                      <a href="/master/program_studi/hapus/{{$id}}" class="btn btn-sm btn-danger" data-toggle="tooltip" title="Hapus Data"><span class="fa fa-trash"></span></a>
-                    </center>
-                  </td>
+                  <td>{{$key->nama_prodi}}</td>
+                  <td><center>{{$key->strata}}</center></td>
+                  <td>{{$key->fak_id}} - {{$key->nama_fakultas}}</td>
                 </tr>
                 @endforeach
               </tbody>

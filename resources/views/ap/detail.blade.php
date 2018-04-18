@@ -153,9 +153,14 @@
               <td>Rp {{number_format($ap->arp->ar->bpp,0,'.','.')}},-</td>
             </tr>
             <tr>
-              <td>Biaya Pengelolaan</td>
+              <td>Total Pengelolaan</td>
               <td>:</td>
               <td>Rp {{number_format($ap->arp->ar->pengelolaan,0,'.','.')}},-</td>
+            </tr>
+            <tr>
+              <td>Total Tagihan</td>
+              <td>:</td>
+              <td>Rp {{number_format($ap->arp->ar->tagihan,0,'.','.')}},-</td>
             </tr>
             <tr>
               <td>Tanggal Tagihan</td>

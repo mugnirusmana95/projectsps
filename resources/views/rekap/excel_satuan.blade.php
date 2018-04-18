@@ -50,7 +50,7 @@
           <th width="20" align="center" style="background-color:#FFC000">Jatuh Tempo</th>
           <th rowspan="2" align="center" style="background-color:#66FFFF">@if($beasiswa->date==null) - @else{{strftime('%d %B %Y',strtotime($beasiswa->date))}} @endif</th>
           <th rowspan="2" align="center" style="background-color:#66FFFF">@if($beasiswa->date_sp2d==null)-@else{{strftime('%d %B %Y',strtotime($beasiswa->date_sp2d))}}@endif</th>
-          <th rowspan="2" align="center" style="background-color:#66FFFF">@if($beasiswa->date_pay==null)-@else{{strftime('%d %B %Y',strtotime($key->date_pay))}}@endif</th>
+          <th rowspan="2" align="center" style="background-color:#66FFFF">@if($beasiswa->date_pay==null)-@else{{strftime('%d %B %Y',strtotime($beasiswa->date_pay))}}@endif</th>
         </tr>
         <tr>
           <th colspan="11"></th>

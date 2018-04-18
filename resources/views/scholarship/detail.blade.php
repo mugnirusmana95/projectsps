@@ -149,7 +149,7 @@
                   <th width="1%"><center>No</center></th>
                   <th>Nama Termin</th>
                   <th width="17%"><center>Total BPP</center></th>
-                  <th width="17%"><center>Pengelolaan</center></th>
+                  <th width="17%"><center>Total Pengelolaan</center></th>
                   <th width="15%"><center>Tanggal Tagihan</center></th>
                   <th width="15%"><center>Jatuh Tempo</center></th>
                   <th width="10%"><center>Aksi</center></th>
@@ -161,7 +161,7 @@
               <tbody>
                 @foreach ($termin as $key)
                   <tr>
-                    <td>{{$no2++}}</td>
+                    <td><center>{{$no2++}}</center></td>
                     <td>{{$key->name}}</td>
                     <td align='right'>Rp @if($key->bpp == null){{'0'}}@else {{number_format($key->bpp,0,'.','.')}} @endif,-</td>
                     <td align='right'>Rp @if($key->pengelolaan == null){{'0'}}@else {{number_format($key->pengelolaan,0,'.','.')}} @endif,-</td>

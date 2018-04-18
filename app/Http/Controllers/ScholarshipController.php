@@ -452,34 +452,33 @@ class ScholarshipController extends Controller
     public function searchMahasiswa($nim)
     {
       $mahasiswa = colleger::find($nim);
-      $prodi = $mahasiswa->prodi;
-      $year1 = substr($nim, 3, 2);
-      $year2 = '20'.$year1;
+      $prodi = $mahasiswa->prodi_id;
+      $year = "20".substr($nim, 3, 2);
 
-      $bpp = bpp_prodi::where('prodi',$prodi)->where('year',$year2)->first();
+      $bpp = bpp_prodi::where('prodi_id',$prodi)->where('year',$year)->first();
 
       if (count($bpp) > 0) {
-        $bpp2 = number_format($bpp->bpp,0,'.','.');
+        $total = number_format($bpp->bpp,0,'.','.');
       } else {
-        $bpp2 = 0;
+        $total = 0;
       }
 
-      return $bpp2;
+      return $total;
     }
 
     public function hitungSks($sks, $nim)
     {
-      $mahasiswa = colleger::find($nim);
-      $prodi = $mahasiswa->prodi;
-      $year1 = substr($nim, 3, 2);
-      $year2 = '20'.$year1;
 
-      $bpp_prodi = bpp_prodi::where('prodi',$prodi)->where('year',$year2)->first();
+      $mahasiswa = colleger::find($nim);
+      $prodi = $mahasiswa->prodi_id;
+      $year = substr($nim, 3, 2);
+
+      $bpp_prodi = bpp_prodi::where('prodi_id',$prodi)->where('year',$year)->first();
 
       if (count($bpp_prodi) > 0) {
         $bpp = $bpp_prodi->bpp;
       } else {
-        $bpp = '';
+        $bpp = 0;
       }
 
       if($sks == 0 || $sks==null) {
@@ -489,6 +488,32 @@ class ScholarshipController extends Controller
       }
 
       return $total;
+    }
+
+    public function cekSemester($nim, $semester)
+    {
+      $mahasiswa = colleger::find($nim);
+      $sem = $mahasiswa->semester;
+      $hasil1 = $semester%2;
+      $hasil2 = substr($mahasiswa->nim,3,2)+$semester/2;
+      if($sem=='Ganjil') {
+        $data['semester1'] = '1';
+        if($hasil1==0){
+          $data['semester2'] = '2';
+        } else {
+          $data['semester2'] = '1';
+        }
+      } else {
+        $data['semester1'] = '2';
+        if($hasil1==0){
+          $data['semester2'] = '1';
+        } else {
+          $data['semester2'] = '2';
+        }
+      }
+      $data['tahun1'] = "20".substr($mahasiswa->nim,3,2);
+      $data['tahun2'] = "20".(int)$hasil2;
+      return $data;
     }
 
     public function findStudent(Request $req)
@@ -502,7 +527,7 @@ class ScholarshipController extends Controller
       $colleger = [];
 
       foreach ($student as $item) {
-          $colleger[] = ['id' => $item->nim, 'text' => $item->nim.' '.$item->nama_lengkap];
+          $colleger[] = ['id' => $item->nim, 'text' => $item->nim.'-'.$item->nama_lengkap.'-'.$item->status];
       }
 
       return response()->json($colleger);

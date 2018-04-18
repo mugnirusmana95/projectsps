@@ -57,7 +57,7 @@
                 <select class="form-control select" name="prodi" id="prodi">
                   <option></option>
                   @foreach ($prodi as $key)
-                  <option value="{{$key->name}}">{{$key->name}}</option>
+                  <option value="{{$key->prodi_id}}">{{$key->prodi_id}} - @if($key->nama_prodi==null){{'null'}}@else{{$key->nama_prodi}}@endif - {{$key->strata}}</option>
                   @endforeach
                 </select>
                 @if ($errors->has('prodi'))

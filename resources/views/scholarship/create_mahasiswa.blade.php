@@ -111,18 +111,21 @@
                 <table class="table table-hover table-bordered">
                   <thead>
                     <tr>
-                      <th width="1%"><center>No</center></th>
-                      <th width="15%">Mahasiswa</th>
-                      <th width="1%"><center>Sem. Awal Beasiswa</center></th>
-                      <th width="1%"><center>Sem. Akhir Beasiswa</center></th>
-                      <th width="1%"><center>Jml. SKS</center></th>
-                      <th width="1%"><center>Jml. Sem.</center></th>
-                      <th width="15%"><center>BPP</center></th>
-                      <th width="15%"><center>Pengelolaan</center></th>
-                      <th width="15%"><center>Biaya Hidup</center></th>
-                      <th width="15%"><center>Biaya Buku</center></th>
-                      <th width="15%"><center>Biaya Penelitian</center></th>
-                      <th width="10%"><center>Aksi</center></th>
+                      <th rowspan="2" width='1%'><center>NO</center></th>
+                      <th rowspan="2" width="15%"><center>Mahasiswa<span class="req">*</span></center></th>
+                      <th colspan="3"><center>Masa Beasiswa</center></th>
+                      <th rowspan="2" width="5%"><center>Jml SKS</center></th>
+                      <th rowspan="2" width="15%"><center>BPP</center></th>
+                      <th rowspan="2" width="15%"><center>Pengelolaan</center></th>
+                      <th rowspan="2" width="15%"><center>Biaya Hidup</center></th>
+                      <th rowspan="2" width="15%"><center>Biaya Buku</center></th>
+                      <th rowspan="2" width="15%"><center>Biaya Penelitian</center></th>
+                      <th rowspan="2" width='1%'><center>Aksi</center></th>
+                    </tr>
+                    <tr>
+                      <th width="5%"><center>Awal Beasiswa</center></th>
+                      <th width="5%"><center>Akhir Beasiswa</center></th>
+                      <th width="5%"><center>Jml Sem.</center></th>
                     </tr>
                   </thead>
                   @php
@@ -167,29 +170,33 @@
 
               <div class="table-responsive">
                 <table class="table table-hover table-bordered" id='pTable'>
-                  <theader>
+                  <thead>
                     <tr>
-                      <th width="1%" rowspan="2"><center>No</center></th>
-                      <th width="15%" rowspan="2">Mahasiswa <span class="req">*</span></th>
+                      <th rowspan="3" width='1%'><center>NO</center></th>
+                      <th rowspan="3" width="15%"><center>Mahasiswa<span class="req">*</span></center></th>
+                      <th colspan="5"><center>Masa Beasiswa</center></th>
+                      <th rowspan="3" width="5%"><center>Jml SKS</center></th>
+                      <th rowspan="3"><center>BPP</center></th>
+                      <th rowspan="3"><center>Pengelolaan</center></th>
+                      <th rowspan="3"><center>Biaya Hidup</center></th>
+                      <th rowspan="3"><center>Biaya Buku</center></th>
+                      <th rowspan="3"><center>Biaya Penelitian</center></th>
+                      <th rowspan="3" width='1%'><center>Aksi</center></th>
+                    </tr>
+                    <tr>
                       <th colspan="2"><center>Awal Beasiswa</center></th>
                       <th colspan="2"><center>Akhir Beasiswa</center></th>
-                      <th width="6%" rowspan="2"><center>Jml. SKS</center></th>
-                      <th width="5%" rowspan="2"><center>Jml. Sem.</center></th>
-                      <th rowspan="2"><center>BPP</center></th>
-                      <th rowspan="2"><center>Pengelolaan</center></th>
-                      <th rowspan="2"><center>Biaya Hidup</center></th>
-                      <th rowspan="2"><center>Biaya Buku</center></th>
-                      <th rowspan="2"><center>Biaya Penelitian</center></th>
-                      <th width="1%" rowspan="2"><center>Aksi</center></th>
+                      <th rowspan="2" width="5%"><center>Jml Sem.</center></th>
                     </tr>
                     <tr>
                       <th width="8%"><center>Sem.<span class="req">*</span></center></th>
-                      <th width="7%"><center>Thn<span class="req">*</span></center></th>
+                      <th width="7%"><center>Thn.<span class="req">*</span></center></th>
                       <th width="8%"><center>Sem.<span class="req">*</span></center></th>
                       <th width="7%"><center>Thn.<span class="req">*</span></center></th>
                     </tr>
-                  </theader>
+                  </thead>
                   <tbody>
+
                   </tbody>
                 </table>
               </div>
@@ -197,7 +204,7 @@
               <table class="table">
                 <tbody>
                   <tr>
-                    <td><a  href="javascript:;" class="btn btn-md btn-warning @if($total->total > $scholarship->value)hide @endif" id='addButId'>Tambah Mahasiswa</a></td>
+                    <td><a  href="javascript:;" class="btn btn-md btn-warning" id='addButId'>Tambah Mahasiswa</a></td>
                   </tr>
                   <tr>
                     <td>
@@ -235,27 +242,27 @@
   //Fungsi untuk menambah row
   $(document).ready(function(){
   $('#addButId').click(function(){
-    var sno=$('#pTable tr').length-1; //length+1;
+    var sno=$('#pTable tr').length-2; //length+1;
     //Menghilangkan tombol tambah data
     trow =  "<tr><td width='1%'><center>"+sno+"</center></td>"+
             "<td><select class='form-control select' name='nim[]' id='nim"+sno+"' required>"+
             "</select></td>"+
             "<td>"+
-            "<select class='form-control' name='semester1[]' required>"+
+            "<select class='form-control' name='semester1[]' id='sem1"+sno+"' required>"+
             "<option value='1'>Gj</option>"+
             "<option value='2'>Gn</option>"+
             "</select>"+
             "</td>"+
-            "<td><input type='text' class='form-control' name='tahun1[]' minlength='4' maxlength='4' required></td>"+
+            "<td><input type='text' class='form-control' name='tahun1[]' id='year1"+sno+"' minlength='4' maxlength='4' required></td>"+
             "<td>"+
-            "<select class='form-control' name='semester2[]' required>"+
+            "<select class='form-control semester2' name='semester2[]' id='sem2"+sno+"' required>"+
             "<option value='1'>Gj</option>"+
             "<option value='2'>Gn</option>"+
             "</select>"+
             "</td>"+
-            "<td><input type='text' class='form-control' name='tahun2[]' minlength='4' maxlength='4' required></td>"+
+            "<td><input type='text' class='form-control' name='tahun2[]' id='year2"+sno+"' minlength='4' maxlength='4' required></td>"+
+            "<td><input type='text' class='form-control' name='jmlsemester[]' id='semester"+sno+"'></td>"+
             "<td><input type='text' class='form-control' name='jmlsks[]' id='sks"+sno+"'></td>"+
-            "<td><input type='text' class='form-control' name='jmlsemester[]'></td>"+
             "<td><input type='text' class='form-control' name='bpp[]' id='bpp"+sno+"' value=''></td>"+
             "<td><input type='text' class='form-control' name='pengelolaan[]' id='pengelolaan"+sno+"' value='@if($scholarship->bpp>0){{number_format($scholarship->bpp,0,'.','.')}}@endif'></td>"+
             "<td><input type='text' class='form-control' name='hidup[]' id='hidup"+sno+"' value=''></td>"+
@@ -333,20 +340,54 @@
               var val = $(this).val();
 
               $.get("/beasiswa/mahasiswa/search/"+val, function(response3){
-                if(response3=='0' || response=='' || response3==0) {
-                  $('#bpp'+sno).val('')
-                } else {
-                  $('#bpp'+sno).val(response3)
-                }
+                $('#bpp'+sno).val(response3);
               });
             });
 
             $("#sks"+sno).keyup(function(){
-              var sks = $("#sks"+sno).val();
+              var sks = $(this).val();
               var nim = $("#nim"+sno).val();
-              $.get("/beasiswa/mahasiswa/hitung/"+sks+"/"+nim, function(response4){
-                $("#bpp"+sno).val(response4)
-              });
+              var sks = $("#sks"+sno).val();
+              var bpp = $("#bpp"+sno).val().split('.').join('');
+              if(nim==='' || nim===null){
+                alert("Mahasiswa masih kosong, harap pilih mahasiswa terlebih dahulu");
+                $("#sks"+sno).val('');
+              } else if(bpp==='' || bpp===null){
+                alert("BPP masih kosong, harap isi BPP terlebih dahulu");
+                $("#sks"+sno).val('');
+              } else {
+                $.get("/beasiswa/mahasiswa/hitung/"+sks+"/"+nim, function(response4){
+                  //$("#bpp"+sno).val(response4)
+                });
+              }
+              // var bpp2 = $("#bpp"+sno).val();
+              // var hasil = parseInt(bpp/2);
+
+              // if(sks===0 || sks==='0'){
+              //   if(bpp === 0 || bpp === '0') {
+              //     $("#bpp"+sno).val('');
+              //   } else {
+              //     $("#bpp"+sno).val(hasil.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
+              //   }
+              // } else {
+              //   $("#bpp"+sno).val(bpp.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
+              // }
+            });
+
+            $("#semester"+sno).keyup(function(){
+              var sem = $(this).val();
+              var nim = $("#nim"+sno).val();
+              if(nim==='' || nim===null) {
+                alert("Mahasiswa masih kosong, harap pilih mahasiswa terlebih dahulu");
+                $(this).val('');
+              } else {
+                $.get("/beasiswa/mahasiswa/cek/semester/"+nim+"/"+sem, function(response5){
+                  $("#sem1"+sno).val(response5.semester1).prop('selected',true);
+                  $("#year1"+sno).val(response5.tahun1);
+                  $("#sem2"+sno).val(response5.semester2).prop('selected',true);
+                  $("#year2"+sno).val(response5.tahun2);
+                });
+              }
             });
     });
   });

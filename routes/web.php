@@ -26,17 +26,6 @@ Route::group([
     'middleware' => 'isDevAdmin'
   ], function() {
     Route::get('/','FacultyController@index');
-    Route::get('/tambah','FacultyController@create');
-    Route::post('/tambah/simpan','FacultyController@store');
-    Route::get('/detail/{id}','FacultyController@detail');
-    Route::get('/ubah/{id}','FacultyController@edit');
-    Route::put('/ubah/simpan/{id}','FacultyController@update');
-    Route::get('/hapus/{id}','FacultyController@destroy');
-    Route::get('/program_studi/{id}','FacultyController@createStudy');
-    Route::post('/program_studi/simpan/{id}','FacultyController@storeStudy');
-    Route::get('/program_studi/ubah/{id}','FacultyController@editStudy');
-    Route::put('/program_studi/ubah/simpan/{id}','FacultyController@updateStudy');
-    Route::get('/program_studi/hapus/{id}','FacultyController@destroyStudy');
   });
 
   //Study Program
@@ -45,12 +34,6 @@ Route::group([
     'middleware' => 'isDevAdmin'
   ], function() {
     Route::get('/','StudyController@index');
-    Route::get('//tambah','StudyController@create');
-    Route::post('/tambah/simpan','StudyController@store');
-    Route::get('/ubah/{id}','StudyController@edit');
-    Route::put('/ubah/simpan/{id}','StudyController@update');
-    Route::get('/hapus/{id}','StudyController@destroy');
-    Route::get('/search/{name}','StudyController@search');
   });
 
   //Colleger
@@ -131,6 +114,7 @@ Route::group([
     Route::get('/download/{id}','ScholarshipController@downloadExcel');
     Route::get('/mahasiswa/search/{nim}','ScholarshipController@searchMahasiswa');
     Route::get('/mahasiswa/hitung/{sks}/{nim}','ScholarshipController@hitungSks');
+    Route::get('/mahasiswa/cek/semester/{nim}/{semester}','ScholarshipController@cekSemester');
     Route::get('/invoice/find','ScholarshipController@findStudent')->name('scholarship.find.student');
   });
 

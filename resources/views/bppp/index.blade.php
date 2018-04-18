@@ -1,3 +1,7 @@
+@php
+  //dd($bpp);
+@endphp
+
 @extends('index')
 
 @section('title')
@@ -64,12 +68,12 @@
                 @foreach ($bpp as $key)
                 <tr>
                   <td><center>{{$no++}}</center></td>
-                  <td>{{$key->prodi}}</td>
+                  <td>{{$key->prody->nama_prodi}} - {{$key->prody->strata}}</td>
                   <td><center>{{$key->year}}</center></td>
-                  <td align="right">Rp {{number_format($key->bpp)}}.00,-</td>
+                  <td align="right">Rp {{number_format($key->bpp,0,'.','.')}},-</td>
                   <td>
-                    <a href="/master/bpp_prodi/ubah/{{crypt::encrypt($key->id)}}" class="btn btn-sm btn-warning" data-toggle="tooltip" title="Ubah Data Bpp Prodi"><span class="fa fa-edit"></span></a>
-                    <a href="/master/bpp_prodi/hapus/{{crypt::encrypt($key->id)}}" class="btn btn-sm btn-danger" data-toggle="tooltip" title="Hapus Data Bpp Prodi"><span class="fa fa-trash"></span></a>
+                    <a href="/master/bpp_prodi/ubah/{{\Crypt::encrypt($key->id)}}" class="btn btn-sm btn-warning" data-toggle="tooltip" title="Ubah Data Bpp Prodi"><span class="fa fa-edit"></span></a>
+                    <a href="/master/bpp_prodi/hapus/{{\Crypt::encrypt($key->id)}}" class="btn btn-sm btn-danger" data-toggle="tooltip" title="Hapus Data Bpp Prodi"><span class="fa fa-trash"></span></a>
                   </td>
                 </tr>
                 @endforeach
