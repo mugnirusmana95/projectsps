@@ -24,4 +24,14 @@ class colleger extends Model
   {
       return $this->hasMany('App\account_receivable_payment_detail');
   }
+
+  public function prody()
+  {
+      return $this->belongsTo('App\studie','prodi_id');
+  }
+
+  public function faculty()
+  {
+      return $this->belongsTo('App\facultie','fak_id');
+  }
 }

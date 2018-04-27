@@ -30,33 +30,33 @@
 </section>
 @endif
 
-@if($total_pemegang->total > $scholarship->value)
+@if($total_pemegang > $scholarship->value)
 <section class="content-header">
   <div class="row">
     <div class="col-md-12">
       <div class="alert alert-danger alert-dismissible">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         <h4><i class="icon fa fa-check"></i> Info!</h4>
-        Total Pemegang Beasiswa Melebihi Dari Total Beasiswa
+        Total Penerima Beasiswa Melebihi Dari Total Beasiswa
       </div>
     </div>
   </div>
 </section>
-@elseif($total_pemegang->total < $scholarship->value)
+@elseif($total_pemegang < $scholarship->value)
 <section class="content-header">
   <div class="row">
     <div class="col-md-12">
       <div class="alert alert-warning alert-dismissible">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         <h4><i class="icon fa fa-check"></i> Info!</h4>
-        Total Pemegang Beasiswa Kurang Dari Total Beasiswa
+        Total Penerima Beasiswa Kurang Dari Total Beasiswa
       </div>
     </div>
   </div>
 </section>
 @endif
 
-@if($total_termin->total > $scholarship->value)
+@if($total_termin > $scholarship->value)
 <section class="content-header">
   <div class="row">
     <div class="col-md-12">
@@ -68,7 +68,7 @@
     </div>
   </div>
 </section>
-@elseif($total_termin->total < $scholarship->value)
+@elseif($total_termin < $scholarship->value)
 <section class="content-header">
   <div class="row">
     <div class="col-md-12">
@@ -89,7 +89,7 @@
       <a href="/beasiswa/download/{{$id}}" class="btn btn-sm btn-success" data-toggle="tooltip" title="Download Beasiswa (SPK) (Excel)"><span class="fa fa-file-excel-o"></span></a>
       @if($scholarship->termin==0)
       <a href="/beasiswa/ubah/{{$id}}" class="btn btn-sm btn-warning" data-toggle="tooltip" title="Ubah Data Beasiswa"><span class="fa fa-edit"></span></span></a>
-      <a href="/beasiswa/mahasiswa/{{$id}}" class="btn btn-sm btn-info" data-toggle="tooltip" title="Tambah Pemegang Beasiswa"><span class="fa fa-plus"></span></a>
+      <a href="/beasiswa/mahasiswa/{{$id}}" class="btn btn-sm btn-info" data-toggle="tooltip" title="Tambah Penerima Beasiswa"><span class="fa fa-plus"></span></a>
       <a href="/beasiswa/hapus/{{$id}}" class="btn btn-sm btn-danger" data-toggle="tooltip" title="Hapus Data Beasiswa"><span class="fa fa-trash"></span></a>
       @endif
     </div>
@@ -187,25 +187,29 @@
     <div class="col-md-12">
       <div class="box box-primary">
         <div class="box-header">
-          <h3>Daftar Pemegang Beasiswa</h3>
+          <h3>Daftar Penerima Beasiswa</h3>
         </div>
         <div class="box-body">
           <div class="table-responsive">
-            <table id="example1" class="table table-hover table-bordered">
+
+            <table class="table table-hover table-bordered" id="example1">
               <thead>
                 <tr>
-                  <th width="1%"><center>No</center></th>
-                  <th width='10%'>Mahasiswa</th>
-                  <th width="1%"><center>Sem. Awal</center></th>
-                  <th width="1%"><center>Sem. Akhir</center></th>
-                  <th width="1%"><center>Jml. SKS</center></th>
-                  <th width="1%"><center>Jml. Sem.</center></th>
-                  <th width="15%"><center>BPP</center></th>
-                  <th width="15%"><center>Pengelolaan</center></th>
-                  <th width="15%"><center>Biaya Hidup</center></th>
-                  <th width="15%"><center>Biaya Buku</center></th>
-                  <th width="15%"><center>Biaya Penelitian</center></th>
-                  <th width="1%"><center>Aksi</center></th>
+                  <th rowspan="2" width='1%'><center>NO</center></th>
+                  <th rowspan="2" width="15%"><center>Mahasiswa<span class="req">*</span></center></th>
+                  <th colspan="3"><center>Masa Beasiswa</center></th>
+                  <th rowspan="2" width="5%"><center>Jml SKS</center></th>
+                  <th rowspan="2" width="15%"><center>BPP</center></th>
+                  <th rowspan="2" width="15%"><center>Pengelolaan</center></th>
+                  <th rowspan="2" width="15%"><center>Biaya Hidup</center></th>
+                  <th rowspan="2" width="15%"><center>Biaya Buku</center></th>
+                  <th rowspan="2" width="15%"><center>Biaya Penelitian</center></th>
+                  <th rowspan="2" width='1%'><center>Aksi</center></th>
+                </tr>
+                <tr>
+                  <th width="5%"><center>Awal Beasiswa</center></th>
+                  <th width="5%"><center>Akhir Beasiswa</center></th>
+                  <th width="5%"><center>Jml Sem.</center></th>
                 </tr>
               </thead>
               @php
@@ -216,15 +220,15 @@
                   <tr>
                     <td><center>{{$no++}}</center></td>
                     <td>{{$key->nim_colleger}} - {{$key->colleger->nama_lengkap}}</td>
-                    <td><center>@if($key->chapter1 == 1) Ganjil @else Genap @endif / {{$key->year1}}</center></td>
-                    <td><center>@if($key->chapter2 == 1) Ganjil @else Genap @endif / {{$key->year2}}</center></td>
+                    <td><center>@if($key->chapter1 == 1) Gj @else Gn @endif / {{$key->year1}}</center></td>
+                    <td><center>@if($key->chapter2 == 1) Gn @else Gj @endif / {{$key->year2}}</center></td>
                     <td><center>{{$key->total_sks}}</center></td>
                     <td><center>{{$key->total_chapter}}</center></td>
-                    <td align="right">Rp @if($key->bpp == null || $key->bpp ==0){{'0'}}@else{{number_format($key->bpp,0,'.','.')}}@endif,-</td>
-                    <td align="right">Rp @if($key->pengelolaan == null || $key->pengelolaan ==0){{'0'}}@else{{number_format($key->pengelolaan,0,'.','.')}}@endif,-</td>
-                    <td align='right'>Rp @if($key->biaya_hidup == null || $key->biaya_hidup ==0){{'0'}}@else{{number_format($key->biaya_hidup,0,'.','.')}}@endif,-</td>
-                    <td align='right'>Rp @if($key->biaya_buku == null || $key->biaya_buku ==0){{'0'}}@else{{number_format($key->biaya_buku,0,'.','.')}}@endif,-</td>
-                    <td align='right'>Rp @if($key->biaya_penelitian == null || $key->biaya_penelitian ==0){{'0'}}@else{{number_format($key->biaya_penelitian)}}@endif,-</td>
+                    <td align="right">Rp @if ($key->bpp == null || $key->bpp==0){{'0'}}@else {{number_format($key->bpp,0,'.','.')}} @endif,-</td>
+                    <td align='right'>Rp @if ($key->pengelolaan == null || $key->pengelolaan==0){{'0'}}@else{{number_format($key->pengelolaan,0,'.','.')}}@endif,-</center></td>
+                    <td align='right'>Rp @if ($key->biaya_hidup == null || $key->biaya_hidup==0){{'0'}}@else{{number_format($key->biaya_hidup,0,'.','.')}}@endif,-</center></td>
+                    <td align='right'>Rp @if ($key->biaya_buku == null || $key->biaya_buku==0){{'0'}}@else{{number_format($key->biaya_buku,0,'.','.')}}@endif,-</center></td>
+                    <td align='right'>Rp @if ($key->biaya_penelitian == null || $key->biaya_penelitian==0){{'0'}}@else{{number_format($key->biaya_penelitian,0,'.','.')}}@endif,-</center></td>
                     <td>
                       <a href="/master/mahasiswa/lihat/{{crypt::encrypt($key->nim_colleger)}}" class="btn btn-sm btn-primary btn-block" data-toggle="tooltip" title="Lihat Data"><span class="fa fa-eye"></span></a>
                       @if($scholarship->termin==0)

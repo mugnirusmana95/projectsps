@@ -151,6 +151,7 @@ class ArController extends Controller
           ORDER BY a.created_at DESC"
         ));
         $data['ard'] = account_receivable_detail::where('id_ar',$key)->get();
+        $data['total'] = DB::table('account_receivable_details')->select(DB::raw('sum(bpp + pengelolaan + biaya_hidup + biaya_buku + biaya_penelitian) as total, sum(pengelolaan) as pengelolaan, sum(bpp) as bpp'))->where('id_ar', $key)->first();
         $data['id'] = crypt::encrypt($key);
 
         foreach ($ar as $key) {
@@ -238,11 +239,13 @@ class ArController extends Controller
 
     public function createMahasiswa($id)
     {
-      $data['ar'] = account_receivable::find(crypt::decrypt($id));
+      $key = Crypt::decrypt($id);
+      $data['ar'] = account_receivable::find($key);
       $data['ard'] = account_receivable_detail::where('id_ar',$data['ar']->id)->get();
       $data['id'] = crypt::encrypt($data['ar']->id);
       $data['colleger'] = colleger::orderBy('nim','ASC')->get();
       $data['scholarship'] = scholarship::find($data['ar']->id_scholarship);
+      $data['total'] = DB::table('account_receivable_details')->select(DB::raw('sum(bpp + pengelolaan + biaya_hidup + biaya_buku + biaya_penelitian) as total, sum(pengelolaan)as pengelolaan, sum(bpp) as bpp'))->where('id_ar', $key)->first();
 
       return view('ar.create_mahasiswa',$data);
     }
@@ -270,6 +273,8 @@ class ArController extends Controller
           $detail->year1 = $request->tahun1[$name];
           $detail->chapter2 = $request->semester2[$name];
           $detail->year2 = $request->tahun2[$name];
+          $detail->chapter3 = $request->semester3[$name];
+          $detail->year3 = $request->tahun3[$name];
           $detail->total_sks = $request->jmlsks[$name];
           $detail->total_chapter = $request->jmlsemester[$name];
           $detail->pengelolaan = $pengelolaan1;
@@ -307,14 +312,10 @@ class ArController extends Controller
         'nim' => 'required',
         'chapter1' => 'required',
         'year1' => 'required',
-        'chapter2' => 'required',
-        'year2' => 'required',
       ],[
         'nim.required' => 'Field wajib diisi.',
         'chapter1.required' => 'Field wajib dipilih.',
         'year1.required' => 'Field wajib diisi.',
-        'chapter2.required' => 'Field wajib dipilih.',
-        'year2.required' => 'Field wajib diisi.',
       ]);
 
       $key = crypt::decrypt($id);
@@ -335,6 +336,8 @@ class ArController extends Controller
       $colleger->year1 = $request->year1;
       $colleger->chapter2 = $request->chapter2;
       $colleger->year2 = $request->year2;
+      $colleger->chapter3 = $request->chapter3;
+      $colleger->year3 = $request->year3;
       $colleger->total_sks = $request->total_sks;
       $colleger->total_chapter = $request->total_chapter;
       $colleger->bpp = $bpp1;
@@ -364,6 +367,7 @@ class ArController extends Controller
     {
       $key  = Crypt::decrypt($id);
       $data['ar'] = account_receivable::find($key);
+      $data['total'] = DB::table('account_receivable_details')->select(DB::raw("sum(bpp) as bpp, sum(pengelolaan) as pengelolaan, sum(bpp + pengelolaan + biaya_hidup + biaya_buku + biaya_penelitian) as tagihan"))->where('id_ar',$key)->first();
       $data['id'] = $id;
       return view('ar.cetak',$data);
     }
@@ -384,6 +388,7 @@ class ArController extends Controller
 
       $key = Crypt::decrypt($id);
       $data['invoice'] = account_receivable::find($key);
+      $data['total'] = DB::table('account_receivable_details')->select(DB::raw("sum(bpp) as bpp, sum(pengelolaan) as pengelolaan, sum(bpp + pengelolaan + biaya_hidup + biaya_buku + biaya_penelitian) as tagihan"))->where('id_ar',$key)->first();
       $data['nama'] = $request->nama;
       $data['nip'] = $request->nip;
       $data['diterima'] = $request->diterima;
@@ -398,8 +403,7 @@ class ArController extends Controller
       $data['data1'] = account_receivable::find($key);
       $data['data2'] = scholarship::find($data['data1']->id_scholarship);
       $data['data3'] = account_receivable_detail::with('account_receivable')->where('id_ar',$key)->get();
-      $total = DB::table('account_receivable_details')->select(DB::raw('sum((bpp + pengelolaan) * total_chapter) as total'))->where('id_ar', $key)->first();
-      $data['total_colleger'] = (int)$total->total;
+      $data['total'] = DB::table('account_receivable_details')->select(DB::raw('sum(bpp + pengelolaan + biaya_hidup +  biaya_buku + biaya_penelitian) as tagihan, sum(bpp) as bpp, sum(pengelolaan) as pengelolaan'))->where('id_ar', $key)->first();
 
       return Excel::create('tagihan(invoie)_'.$data['data1']->invoice, function($excel) use ($data) {
         $excel->sheet('invoice2', function($sheet) use ($data) {
@@ -421,7 +425,12 @@ class ArController extends Controller
     {
       $data['tagihan'] = termin::find($id);
       $data['scholarship'] = scholarship::find($data['tagihan']->id_scholarship);
-      $data['bpp'] = $data['tagihan']->bpp + $data['tagihan']->pengelolaan;
+      $bpp = DB::table('scholarships_details')->select(DB::raw('sum(bpp + pengelolaan + biaya_hidup + biaya_buku + biaya_penelitian) as total'))->where('id_scholarship',$data['scholarship']->id)->first();
+      if($bpp == null || $bpp=="" || count($bpp)==0){
+        $data['bpp'] = $bpp->total;
+      } else {
+        $data['bpp'] = '0';
+      }
 
       return $data;
     }
@@ -453,9 +462,17 @@ class ArController extends Controller
       $colleger = [];
 
       foreach ($student as $item) {
-          $colleger[] = ['id' => $item->nim, 'text' => $item->nim.'-'.$item->nama_lengkap];
+          $colleger[] = ['id' => $item->nim, 'text' => $item->nim.' - '.$item->nama_lengkap.' - '.$item->status];
       }
 
       return response()->json($colleger);
+    }
+
+    public function cekTagihan($nim, $thn, $sem)
+    {
+      $tagihan = account_receivable_detail::where('nim_colleger',$nim)->where('chapter3',$sem)->where('year3',$thn)->first();
+      $jml = count($tagihan);
+
+      return $jml;
     }
 }

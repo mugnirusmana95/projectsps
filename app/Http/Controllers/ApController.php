@@ -86,6 +86,8 @@ class ApController extends Controller
           $detail->year1 = $key->year1;
           $detail->chapter2 = $key->chapter2;
           $detail->year2 = $key->year2;
+          $detail->chapter3 = $key->chapter3;
+          $detail->year3 = $key->year3;
           $detail->total_sks = $key->total_sks;
           $detail->total_chapter = $key->total_chapter;
           $detail->pengelolaan = $key->pengelolaan;

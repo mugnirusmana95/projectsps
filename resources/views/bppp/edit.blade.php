@@ -59,7 +59,7 @@
                 <select class="form-control select" name="prodi" id="prodi">
                   <option></option>
                   @foreach ($prodi as $key)
-                  <option value="{{$key->name}}" @if($bpp->prodi == $key->name) selected @endif>{{$key->name}}</option>
+                  <option value="{{$key->prodi_id}}" @if($bpp->prodi_id == $key->prodi_id) selected @endif>{{$key->prodi_id}} - @if($key->nama_prodi==null){{'null'}}@else{{$key->nama_prodi}}@endif - {{$key->strata}}</option>
                   @endforeach
                 </select>
                 @if ($errors->has('prodi'))
@@ -87,12 +87,24 @@
             </div>
 
             <div class="form-group {{$errors->has('bpp') ? 'has-error' : ''}}">
-              <label for="nilai" class="col-md-2 control-label">BPP <span class="req">*</span></label>
+              <label for="bpp" class="col-md-2 control-label">BPP <span class="req">*</span></label>
               <div class="col-md-8">
                 <input type="text" class="form-control" id='bpp' placeholder="BPP" name="bpp" value="{{number_format($bpp->bpp,0,'.','.')}}">
                 @if ($errors->has('bpp'))
                 <span class="help-block">
                     {{$errors->first('bpp')}}
+                </span>
+                @endif
+              </div>
+            </div>
+
+            <div class="form-group {{$errors->has('sks') ? 'has-error' : ''}}">
+              <label for="sks" class="col-md-2 control-label">Maksimal SKS <span class="req">*</span></label>
+              <div class="col-md-8">
+                <input type="text" class="form-control" id='sks' placeholder="Maksimal SKS" name="sks" value="@if($bpp->sks>0){{$bpp->sks}}@else{{'0'}}@endif">
+                @if ($errors->has('sks'))
+                <span class="help-block">
+                    {{$errors->first('sks')}}
                 </span>
                 @endif
               </div>

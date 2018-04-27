@@ -65,7 +65,7 @@
             </div>
 
             <div class="form-group {{$errors->has('chapter1') ? 'has-error' : ''}}">
-              <label for="chapter1" class="col-md-2 control-label">Sem. Awal Beasiswa <span class="req">*</span></label>
+              <label for="chapter1" class="col-md-2 control-label">Semester Awal Beasiswa<span class="req">*</span></label>
               <div class="col-md-8">
                 <select class="form-control" name="chapter1">
                   <option value="1" @if($colleger->chapter1==1)selected @endif>Ganjil</option>
@@ -80,7 +80,7 @@
             </div>
 
             <div class="form-group {{$errors->has('year1') ? 'has-error' : ''}}">
-              <label for="year1" class="col-md-2 control-label">Tahun Awal Beasiswa <span class="req">*</span></label>
+              <label for="year1" class="col-md-2 control-label">Tahun Awal Beasiswa<span class="req">*</span></label>
               <div class="col-md-8">
                 <input type="text" class="form-control" id='year1' placeholder="Tahun" name="year1" value="{{$colleger->year1}}">
                 @if ($errors->has('year1'))
@@ -92,28 +92,67 @@
             </div>
 
             <div class="form-group {{$errors->has('chapter2') ? 'has-error' : ''}}">
-              <label for="chapter2" class="col-md-2 control-label">Sem. Awal Beasiswa <span class="req">*</span></label>
+              <label for="chapter2" class="col-md-2 control-label">Semester Akhir Beasiswa<span class="req">*</span></label>
               <div class="col-md-8">
                 <select class="form-control" name="chapter2">
                   <option value="1" @if($colleger->chapter2==1)selected @endif>Ganjil</option>
                   <option value="2" @if($colleger->chapter2==2)selected @endif>Genap</option>
                 </select>
-                @if ($errors->has('chapter1'))
+                @if ($errors->has('chapter2'))
                 <span class="help-block">
-                    {{$errors->first('chapter1')}}
+                    {{$errors->first('chapter2')}}
                 </span>
                 @endif
               </div>
             </div>
 
             <div class="form-group {{$errors->has('year2') ? 'has-error' : ''}}">
-              <label for="year2" class="col-md-2 control-label">Tahun Akhir Beasiswa <span class="req">*</span></label>
+              <label for="year2" class="col-md-2 control-label">Tahun Akhir Beasiswa<span class="req">*</span></label>
               <div class="col-md-8">
                 <input type="text" class="form-control" id='year2' placeholder="Tahun" name="year2" value="{{$colleger->year2}}">
                 @if ($errors->has('year2'))
                 <span class="help-block">
                     {{$errors->first('year2')}}
                 </span>
+                @endif
+              </div>
+            </div>
+
+            <div class="form-group {{$errors->has('chapter3') ? 'has-error' : ''}}">
+              <label for="chapter3" class="col-md-2 control-label">Semester Tagihan Beasiswa<span class="req">*</span></label>
+              <div class="col-md-8">
+                <select class="form-control" name="chapter3">
+                  <option value="1" @if($colleger->chapter3==1)selected @endif>Ganjil</option>
+                  <option value="2" @if($colleger->chapter3==2)selected @endif>Genap</option>
+                </select>
+                @if ($errors->has('chapter3'))
+                <span class="help-block">
+                    {{$errors->first('chapter3')}}
+                </span>
+                @endif
+              </div>
+            </div>
+
+            <div class="form-group {{$errors->has('year3') ? 'has-error' : ''}}">
+              <label for="year3" class="col-md-2 control-label">Tahun Tagihan Beasiswa<span class="req">*</span></label>
+              <div class="col-md-8">
+                <input type="text" class="form-control" id='year1' placeholder="Tahun" name="year3" value="{{$colleger->year3}}">
+                @if ($errors->has('year3'))
+                <span class="help-block">
+                    {{$errors->first('year3')}}
+                </span>
+                @endif
+              </div>
+            </div>
+
+            <div class="form-group {{$errors->has('total_chapter') ? 'has-error' : ''}}">
+              <label for="total_chapter" class="col-md-2 control-label">Jumlah Semester</label>
+              <div class="col-md-8">
+                <input type="text" class="form-control" id='total_chapter' placeholder="Jumlah Semester" name="total_chapter" value="{{$colleger->total_chapter}}">
+                @if ($errors->has('total_chapter'))
+                  <span class="help-block">
+                    {{$errors->first('total_chapter')}}
+                  </span>
                 @endif
               </div>
             </div>
@@ -125,18 +164,6 @@
                 @if ($errors->has('total_sks'))
                 <span class="help-block">
                     {{$errors->first('total_sks')}}
-                </span>
-                @endif
-              </div>
-            </div>
-
-            <div class="form-group {{$errors->has('total_chapter') ? 'has-error' : ''}}">
-              <label for="total_chapter" class="col-md-2 control-label">Jumlah SKS</label>
-              <div class="col-md-8">
-                <input type="text" class="form-control" id='total_chapter' placeholder="Jumlah Semester" name="total_chapter" value="{{$colleger->total_chapter}}">
-                @if ($errors->has('total_chapter'))
-                <span class="help-block">
-                    {{$errors->first('total_chapter')}}
                 </span>
                 @endif
               </div>

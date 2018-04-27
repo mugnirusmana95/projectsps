@@ -51,17 +51,17 @@
           </div>
           @endif
 
-          @if($total->total > $scholarship->value)
+          @if($total > $scholarship->value)
           <div class="alert alert-danger alert-dismissible">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
             <h4><i class="icon fa fa-info"></i> Info!</h4>
-            Pemegang Beasiswa Melebihi Dari Total Beasiswa
+            Penerima Beasiswa Melebihi Dari Total Beasiswa
           </div>
-          @elseif($total->total < $scholarship->value)
+          @elseif($total < $scholarship->value)
           <div class="alert alert-warning alert-dismissible">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
             <h4><i class="icon fa fa-info"></i> Info!</h4>
-            Pemegang Beasiswa Kurang Dari Total Beasiswa
+            Penerima Beasiswa Kurang Dari Total Beasiswa
           </div>
           @endif
 
@@ -101,14 +101,14 @@
     <div class="col-md-12">
       <div class="box box-primary">
         <div class="box-header">
-          <h3>Daftar Pemegang Beasiswa</h3>
+          <h3>Daftar Penerima Beasiswa</h3>
         </div>
         <div class="box-body">
           <form class="form-horizontal" action="/beasiswa/mahasiswa/simpan/{{$id}}" method="post">
             {{ csrf_field() }}
 
               <div class="table-responsive">
-                <table class="table table-hover table-bordered">
+                <table class="table table-hover table-bordered" id='example1'>
                   <thead>
                     <tr>
                       <th rowspan="2" width='1%'><center>NO</center></th>
@@ -152,21 +152,25 @@
                       </td>
                     </tr>
                     @endforeach
-                    <tr>
-                      <td colspan="2" align="right"><h4><b>Total :</b></h4></td>
-                      <td colspan="9" align="right"><h3><b>Rp. {{number_format($total->total,0,'.','.')}},-</b></h3></td>
-                      <td rowspan="2">
-                        <div style="width:100%;min-height:110px;margin:auto;padding:auto;background-color: @if($total->total > $scholarship->value) #dd4b39 @elseif($total->total < $scholarship->value) #f39c12 @else #00c0ef @endif">
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colspan="2" align="right"><h4><b>Terbilang :</b></h4></td>
-                      <td colspan="9" align="right"><h4><b>@if($total->total>0){{terbilang($total->total)}} rupiah @endif</b></h4></td>
-                    </tr>
                   </tbody>
                 </table>
+
               </div>
+
+              <table class="table table-hover table-bordered">
+                <tr>
+                  <td width="20%" align="right"><h4><b>Total :</b></h4></td>
+                  <td align="right"><h3><b>Rp. {{number_format($total,0,'.','.')}},-</b></h3></td>
+                  <td rowspan="2">
+                    <div style="width:100%;min-height:110px;margin:auto;padding:auto;background-color: @if($total > $scholarship->value) #dd4b39 @elseif($total < $scholarship->value) #f39c12 @else #00c0ef @endif">
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="right"><h4><b>Terbilang :</b></h4></td>
+                  <td align="right"><h4><b>@if($total>0){{terbilang($total)}}@else{{'nol'}}@endif rupiah</b></h4></td>
+                </tr>
+              </table>
 
               <div class="table-responsive">
                 <table class="table table-hover table-bordered" id='pTable'>
@@ -204,7 +208,7 @@
               <table class="table">
                 <tbody>
                   <tr>
-                    <td><a  href="javascript:;" class="btn btn-md btn-warning" id='addButId'>Tambah Mahasiswa</a></td>
+                    <td><a  href="javascript:;" class="btn btn-md btn-warning" id='addButId'>Tambah Penerima Beasiswa</a></td>
                   </tr>
                   <tr>
                     <td>
@@ -357,21 +361,9 @@
                 $("#sks"+sno).val('');
               } else {
                 $.get("/beasiswa/mahasiswa/hitung/"+sks+"/"+nim, function(response4){
-                  //$("#bpp"+sno).val(response4)
+                  $("#bpp"+sno).val(response4)
                 });
               }
-              // var bpp2 = $("#bpp"+sno).val();
-              // var hasil = parseInt(bpp/2);
-
-              // if(sks===0 || sks==='0'){
-              //   if(bpp === 0 || bpp === '0') {
-              //     $("#bpp"+sno).val('');
-              //   } else {
-              //     $("#bpp"+sno).val(hasil.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
-              //   }
-              // } else {
-              //   $("#bpp"+sno).val(bpp.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
-              // }
             });
 
             $("#semester"+sno).keyup(function(){

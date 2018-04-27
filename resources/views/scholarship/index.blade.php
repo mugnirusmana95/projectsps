@@ -1,7 +1,3 @@
-@php
-//  dd($scholarship);
-@endphp
-
 @extends('index')
 
 @section('title')
@@ -74,14 +70,14 @@
                   <td><center>{{$key->year}}</center></td>
                   <td><center>{{$key->source}}</center></td>
                   <td><center>{{$key->type}}</center></td>
-                  <td align="right">Rp @if ($key->value == null) 0 @else {{number_format($key->value)}} @endif.00,-</td>
+                  <td align="right">Rp @if ($key->value == null){{'0'}}@else{{number_format($key->value,0,'.','.')}}@endif,-</td>
                   <td>
                     <a href="/beasiswa/lihat/{{\Crypt::encrypt($key->id)}}" class="btn btn-sm btn-primary" data-toggle="tooltip" title="Lihat Data {{$key->spk}}" data-placement="left"><span class="fa fa-eye"></span></a>
                     <a href="/beasiswa/termin/{{\Crypt::encrypt($key->id)}}" class="btn btn-sm btn-success" data-toggle="tooltip" title="Tambah Termin {{$key->spk}}" data-placement="left"><span class="fa fa-plus"></span></a>
                     <a href="/beasiswa/download/{{\Crypt::encrypt($key->id)}}" class="btn btn-sm btn-success" data-toggle="tooltip" title="Download Beasiswa (SPK) {{$key->spk}}" data-placement="left"><span class="fa fa-file-excel-o"></span></a>
                     @if($key->termin == 0 )
                     <a href="/beasiswa/ubah/{{\Crypt::encrypt($key->id)}}" class="btn btn-sm btn-warning" data-toggle="tooltip" title="Ubah Data {{$key->spk}}" data-placement="left"><span class="fa fa-edit"></span></a>
-                    <a href="/beasiswa/mahasiswa/{{\Crypt::encrypt($key->id)}}" class="btn btn-sm btn-info" data-toggle="tooltip" title="Tambah Pemegang Beasiswa (SPK) {{$key->spk}}" data-placement="left"><span class="fa fa-plus"></span></a>
+                    <a href="/beasiswa/mahasiswa/{{\Crypt::encrypt($key->id)}}" class="btn btn-sm btn-info" data-toggle="tooltip" title="Tambah Penerima Beasiswa (SPK) {{$key->spk}}" data-placement="left"><span class="fa fa-plus"></span></a>
                     <a href="/beasiswa/hapus/{{\Crypt::encrypt($key->id)}}" class="btn btn-sm btn-danger" data-toggle="tooltip" title="Hapus Beasiswa (SPK) {{$key->spk}}" data-placement="left"><span class="fa fa-trash"></span></a>
                     @endif
                   </td>

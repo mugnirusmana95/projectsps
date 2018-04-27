@@ -1,18 +1,18 @@
 @extends('index')
 
 @section('title')
-  Tambah BPP Prodi
+  Import BPP Prodi
 @endsection
 
 @section('content')
 <section class="content-header">
   <h1>
-    Tambah BPP Prodi
+    Import BPP Prodi
   </h1>
   <ol class="breadcrumb">
     <li><a href="/"><i class="fa fa-dashboard"></i> Dashboard</a></li>
     <li><a href="/master/bpp_prodi"> BPP Prodi</a></li>
-    <li class="active"> Tambah BPP Prodi</li>
+    <li class="active"> Import BPP Prodi</li>
   </ol>
 </section>
 
@@ -21,7 +21,7 @@
     <div class="col-md-12">
       <div class="box box-primary">
 
-        <form class="form-horizontal" action="/master/bpp_prodi/tambah/simpan" method="post">
+        <form class="form-horizontal" action="/master/bpp_prodi/import/save" method="post" enctype="multipart/form-data">
           {{ csrf_field() }}
           <div class="box-body">
 
@@ -52,58 +52,12 @@
             @endif
 
             <div class="form-group {{$errors->has('prodi') ? 'has-error' : ''}}">
-              <label for="prodi" class="col-md-2 control-label">Prodi <span class="req">*</span></label>
+              <label for="prodi" class="col-md-2 control-label">Pilih File <span class="req">*</span></label>
               <div class="col-md-8">
-                <select class="form-control select" name="prodi" id="prodi">
-                  <option value=""></option>
-                  @foreach ($prodi as $key)
-                  <option value="{{$key->prodi_id}}">{{$key->prodi_id}} - @if($key->nama_prodi==null){{'null'}}@else{{$key->nama_prodi}}@endif - {{$key->strata}}</option>
-                  @endforeach
-                </select>
+                <input type="file" class="form-control" name="prodi" id="prodi" accept=".csv, .xls, .xlsx">
                 @if ($errors->has('prodi'))
                 <span class="help-block">
                     {{$errors->first('prodi')}}
-                </span>
-                @endif
-              </div>
-            </div>
-
-            <div class="form-group {{$errors->has('year') ? 'has-error' : ''}}">
-              <label for="year" class="col-md-2 control-label">Tahun SPK <span class="req">*</span></label>
-              <div class="col-md-8">
-                <select class="form-control select" name="year" id="year">
-                  <option></option>
-                  @for ($i=$year; $i >= $year2; $i--)
-                    <option value="{{$i}}">{{$i}}</option>
-                  @endfor
-                </select>
-                @if ($errors->has('year'))
-                <span class="help-block">
-                    {{$errors->first('year')}}
-                </span>
-                @endif
-              </div>
-            </div>
-
-            <div class="form-group {{$errors->has('bpp') ? 'has-error' : ''}}">
-              <label for="bpp" class="col-md-2 control-label">BPP <span class="req">*</span></label>
-              <div class="col-md-8">
-                <input type="text" class="form-control" id='bpp' placeholder="BPP" name="bpp" value="{{old('bpp')}}">
-                @if ($errors->has('bpp'))
-                <span class="help-block">
-                    {{$errors->first('bpp')}}
-                </span>
-                @endif
-              </div>
-            </div>
-
-            <div class="form-group {{$errors->has('sks') ? 'has-error' : ''}}">
-              <label for="sks" class="col-md-2 control-label">Maksimal SKS <span class="req">*</span></label>
-              <div class="col-md-8">
-                <input type="text" class="form-control" id='sks' placeholder="Maksimal SKS" name="sks" value="{{old('sks')}}">
-                @if ($errors->has('sks'))
-                <span class="help-block">
-                    {{$errors->first('sks')}}
                 </span>
                 @endif
               </div>

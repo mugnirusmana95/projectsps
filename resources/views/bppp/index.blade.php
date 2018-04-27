@@ -1,5 +1,3 @@
-@php
-  //dd($bpp);
 @endphp
 
 @extends('index')
@@ -23,6 +21,7 @@
   <div class="row">
     <div class="col-md-12">
       <a href="/master/bpp_prodi/tambah" class="btn btn-sm btn-info">Tambah BPP Prodi</a>
+      <a href="/master/bpp_prodi/import" class="btn btn-sm btn-success">Import Excel</a>
     </div>
   </div>
 </section>
@@ -56,8 +55,9 @@
                 <tr>
                   <th width="1%"><center>No</center></th>
                   <th>Prodi</th>
-                  <th width="25%"><center>Tahun Ajaran</center></th>
+                  <th width="20%"><center>Tahun Ajaran</center></th>
                   <th width="25%"><center>BPP</center></th>
+                  <th width="20%"><center>Maksimal SKS</center></th>
                   <th width="8%"><center>Aksi</center></th>
                 </tr>
               </thead>
@@ -71,6 +71,7 @@
                   <td>{{$key->prody->nama_prodi}} - {{$key->prody->strata}}</td>
                   <td><center>{{$key->year}}</center></td>
                   <td align="right">Rp {{number_format($key->bpp,0,'.','.')}},-</td>
+                  <td><center>@if($key->sks>0){{$key->sks}}@else{{'0'}}@endif</center></td>
                   <td>
                     <a href="/master/bpp_prodi/ubah/{{\Crypt::encrypt($key->id)}}" class="btn btn-sm btn-warning" data-toggle="tooltip" title="Ubah Data Bpp Prodi"><span class="fa fa-edit"></span></a>
                     <a href="/master/bpp_prodi/hapus/{{\Crypt::encrypt($key->id)}}" class="btn btn-sm btn-danger" data-toggle="tooltip" title="Hapus Data Bpp Prodi"><span class="fa fa-trash"></span></a>

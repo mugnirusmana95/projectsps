@@ -52,13 +52,13 @@
             </div>
             @endif
 
-            @if($total->total > $scholarship->value)
+            @if($total > $scholarship->value)
             <div class="alert alert-danger alert-dismissible">
               <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
               <h4><i class="icon fa fa-info"></i> Info!</h4>
               Total Termin Melebihi Dari Total Beasiswa
             </div>
-            @elseif($total->total < $scholarship->value)
+            @elseif($total < $scholarship->value)
             <div class="alert alert-warning alert-dismissible">
               <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
               <h4><i class="icon fa fa-info"></i> Info!</h4>
@@ -138,7 +138,7 @@
             <table class="table">
               <tbody>
                 <tr>
-                  <td><a  href="javascript:;" class="btn btn-md btn-warning" id='addButId'>Tambah Field</a></td>
+                  <td><a  href="javascript:;" class="btn btn-md btn-warning" id='addButId'>Tambah Termin</a></td>
                 </tr>
                 <tr>
                   <td>

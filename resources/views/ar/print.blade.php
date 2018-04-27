@@ -26,12 +26,12 @@ Invoice_{{$invoice->invoice}}
   <tr>
     <td>Jumlah uang</td>
     <td>:</td>
-    <td><b>Rp. {{number_format($invoice->tagihan,0,'.','.')}},-</b></td>
+    <td><b>Rp. {{number_format($total->tagihan,0,'.','.')}},-</b></td>
   </tr>
   <tr>
     <td>Terbilang</td>
     <td>:</td>
-    <td><b>{{terbilang($invoice->tagihan)}} rupiah</b></td>
+    <td><b>{{terbilang($total->tagihan)}} rupiah</b></td>
   </tr>
   <tr>
     <td>Untuk Pembayaran</td>
@@ -47,7 +47,7 @@ Invoice_{{$invoice->invoice}}
   <tr>
     <td>
       <hr class="hr">
-      <b>Rp. {{number_format($invoice->tagihan,0,'.','.')}},-</b>
+      <b>Rp. {{number_format($total->tagihan,0,'.','.')}},-</b>
       <hr class="hr">
     </td>
   </tr>

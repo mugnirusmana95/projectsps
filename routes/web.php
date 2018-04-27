@@ -88,6 +88,8 @@ Route::group([
     Route::get('/ubah/{id}','BppprodiController@edit');
     Route::put('/ubah/simpan/{id}','BppprodiController@update');
     Route::get('/hapus/{id}','BppprodiController@destroy');
+    Route::get('/import','BppprodiController@createImport');
+    Route::post('/import/save','BppprodiController@storeImport');
   });
 
   //Scholarship
@@ -115,7 +117,9 @@ Route::group([
     Route::get('/mahasiswa/search/{nim}','ScholarshipController@searchMahasiswa');
     Route::get('/mahasiswa/hitung/{sks}/{nim}','ScholarshipController@hitungSks');
     Route::get('/mahasiswa/cek/semester/{nim}/{semester}','ScholarshipController@cekSemester');
+    Route::get('/mahasiswa/semester/{nim}','ScholarshipController@getSemester');
     Route::get('/invoice/find','ScholarshipController@findStudent')->name('scholarship.find.student');
+    Route::get('/bpp/{id}','ScholarshipController@findBpp');
   });
 
   //Account Receivable(Invoice)
@@ -141,6 +145,7 @@ Route::group([
     Route::get('/total/search/{id}','ArController@searchTagihan');
     Route::get('/invoice/search/{id}','ArController@searchInvoice');
     Route::get('/invoice/find','ArController@findStudent')->name('ar.find.student');
+    Route::get('/cek/tagihan/{nim}/{thn}/{sem}','ArController@cekTagihan');
   });
 
   //Account Receivable Payment
@@ -188,11 +193,16 @@ Route::group([
   });
 
   Route::group([
-    'prefix' => '/rekapan'
+    'prefix' => '/laporan'
   ], function() {
-    Route::get('/','RekapanController@index');
-    Route::get('/download/file/{id}/{id_invoice}','RekapanController@downloadExcel');
+    Route::get('/keuangan','RekapanController@indexKeuangan');
+    Route::post('/keuangan/download','RekapanController@downloadKeuangan');
+//    Route::get('/akademik','RekapanController@indexAkademik');
+    Route::get('/cari/termin/{val}','RekapanController@findTermin');
   });
+
+  Route::get('/setting/toggle_bar','SettingController@toggleBar');
+
 });
 
 Auth::routes();

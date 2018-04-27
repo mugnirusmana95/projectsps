@@ -83,7 +83,7 @@
               <div class="form-group {{$errors->has('tagihan') ? 'has-error' : ''}}">
                 <label for="tagihan" class="col-md-2 control-label">Biaya Tagihan</label>
                 <div class="col-md-8">
-                  <input type="text" class="form-control" id='tagihan' placeholder="Biaya Tagihan" name="tagihan" value="{{number_format($ar->tagihan,0,'.','.')}}" readonly style="background-color:#FFF">
+                  <input type="text" class="form-control" id='tagihan' placeholder="Biaya Tagihan" name="tagihan" value="{{number_format($total->tagihan,0,'.','.')}}" readonly style="background-color:#FFF">
                   @if ($errors->has('tagihan'))
                   <span class="help-block">
                       {{$errors->first('tagihan')}}
@@ -95,7 +95,7 @@
               <div class="form-group {{$errors->has('terbilang') ? 'has-error' : ''}}">
                 <label for="terbilang" class="col-md-2 control-label">Terbilang</label>
                 <div class="col-md-8">
-                  <input type="text" class="form-control" id='terbilang' placeholder="Terbilang" name="terbilang" value="{{terbilang($ar->tagihan)}}" readonly style="background-color:#FFF">
+                  <input type="text" class="form-control" id='terbilang' placeholder="Terbilang" name="terbilang" value="{{terbilang($total->tagihan)}}" readonly style="background-color:#FFF">
                   @if ($errors->has('terbilang'))
                   <span class="help-block">
                       {{$errors->first('terbilang')}}

@@ -34,17 +34,17 @@ setlocale(LC_ALL, 'IND');
 
 </head>
 
-<body class="hold-transition skin-blue-light sidebar-mini">
+<body class="hold-transition skin-blue-light sidebar-mini {{Auth::User()->toggle_bar}}">
 
 <div class="wrapper">
 
   <header class="main-header">
     <a href="/" class="logo">
-      <span class="logo-mini">SPS</span>
+      <span class="logo-mini">SPs</span>
       <span class="logo-lg"><b>BEASISWA </b>SPs</span>
     </a>
     <nav class="navbar navbar-static-top">
-      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+      <a href="#" id='toggle' value="@if(Auth::User()->toggle_bar==null||Auth::User()->toggle_bar==""){{'0'}}@else{{Auth::User()->toggle_bar}}@endif" class="sidebar-toggle" data-toggle="push-menu" role="button">
         <span class="sr-only">Toggle navigation</span>
       </a>
 
@@ -212,12 +212,26 @@ setlocale(LC_ALL, 'IND');
           </a>
         </li>
 
-        <li class="{{ Request::is('rekapan','rekapan/*') ? 'active' : ''}}">
-          <a href="/rekapan">
-            <i class="fa fa-book"></i> <span>Laporan Beasiswa</span>
+        <li class="treeview {{ Request::is('laporan','laporan/*') ? 'active' : ''}}">
+          <a href="#">
+            <i class="fa fa-share"></i> <span>Laporan</span>
             <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
+
+          <ul class="treeview-menu">
+
+            <li class=" {{ Request::is('laporan/keuangan','laporan/keuangan/*') ? 'active' : ''}}">
+              <a href="/laporan/keuangan"><i class="fa fa-square-o"></i> Laporan Keuangan</a>
+            </li>
+
+            <li class=" {{ Request::is('laporan/akademik','laporan/akademik/*') ? 'active' : ''}}">
+              <a href="/laporan/akademik"><i class="fa fa-square-o"></i> Laporan Akademik</a>
+            </li>
+
+          </ul>
+
         </li>
 
       </ul>
@@ -277,6 +291,14 @@ setlocale(LC_ALL, 'IND');
       autoclose: true
     })
   })
+
+  $(document).ready(function(){
+    $("#toggle").click(function(){
+      var val = $(this).val();
+      $.get("/setting/toggle_bar", function(response){
+      });
+    });
+  });
 </script>
 @yield('js')
 </body>

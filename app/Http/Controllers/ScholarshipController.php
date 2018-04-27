@@ -43,10 +43,11 @@ class ScholarshipController extends Controller
     public function store(Request $request)
     {
       $scholarship = new scholarship();
-      $scholarship2 = source_of_scholarship::where('name',$request->source)->first();
 
       $nilai1 = explode(".",$request->nilai);
       $nilai2 = implode('',$nilai1);
+      $bpp1 = explode(".",$request->bpp);
+      $bpp2 = implode('',$bpp1);
 
       $this->validate($request,[
         'spk' => 'required|unique:scholarships',
@@ -64,7 +65,7 @@ class ScholarshipController extends Controller
       $scholarship->spk = $request->spk;
       $scholarship->year = $request->year;
       $scholarship->source = $request->source;
-      $scholarship->bpp = $scholarship2->bpp;
+      $scholarship->bpp = $bpp2;
       $scholarship->type = $request->type;
       $scholarship->value = $nilai2;
       $scholarship->save();
@@ -92,9 +93,23 @@ class ScholarshipController extends Controller
           ON a.id=b.id_termin
           WHERE a.id_scholarship=$key"
         ));;
-        $data['total_pemegang'] = DB::table('scholarships_details')->select(DB::raw('sum((bpp + pengelolaan + biaya_hidup + biaya_buku + biaya_penelitian) * total_chapter) as total'))->where('id_scholarship', $key)->first();
-        $data['total_termin'] = DB::table('termins')->select(DB::raw('sum(bpp + pengelolaan) as total'))->where('id_scholarship', $key)->first();
+        $total_pemegang = DB::table('scholarships_details')->select(DB::raw('sum((bpp + pengelolaan + biaya_hidup + biaya_buku + biaya_penelitian) * total_chapter) as total'))->where('id_scholarship', $key)->first();
+        $total_termin = DB::table('termins')->select(DB::raw('sum(bpp + pengelolaan) as total'))->where('id_scholarship', $key)->first();
+
+        if($total_termin->total==null || $total_termin->total==0 || $total_termin->total==""){
+          $data['total_termin'] = 0;
+        } else {
+          $data['total_termin'] = $total_termin->total;
+        }
+
+        if($total_pemegang->total==null || $total_pemegang->total==0 || $total_pemegang->total==""){
+          $data['total_pemegang'] = 0;
+        } else {
+          $data['total_pemegang'] = $total_pemegang->total;
+        }
+
         $data['id'] = $id;
+//        dd($data['total']);
 
         foreach ($beasiswa as $key) {
           $data['scholarship'] = $key;
@@ -187,7 +202,13 @@ class ScholarshipController extends Controller
         $data['id'] = crypt::encrypt($data['scholarship']->id);
 //        $data['colleger'] = colleger::orderBy('nama_lengkap','ASC')->get();
         $data['colleger2'] = scholarships_detail::where('id_scholarship',$data['scholarship']->id)->get();
-        $data['total'] = DB::table('scholarships_details')->select(DB::raw('sum((bpp + pengelolaan + biaya_hidup + biaya_buku + biaya_penelitian) * total_chapter) as total'))->where('id_scholarship', $data['scholarship']->id)->first();
+        $total = DB::table('scholarships_details')->select(DB::raw('sum((bpp + pengelolaan + biaya_hidup + biaya_buku + biaya_penelitian) * total_chapter) as total'))->where('id_scholarship', $data['scholarship']->id)->first();
+
+        if($total->total==null || $total->total==0 || $total==""){
+          $data['total'] = 0;
+        } else {
+          $data['total'] = $total->total;
+        }
 
         return view('scholarship.create_mahasiswa',$data);
       } catch (DecryptException $e) {
@@ -327,8 +348,14 @@ class ScholarshipController extends Controller
           ON a.id=b.id_termin
           WHERE a.id_scholarship=$key"
         ));
-        $data['total'] = DB::table('termins')->select(DB::raw('sum(bpp + pengelolaan) as total'))->where('id_scholarship', $data['scholarship']->id)->first();
+        $total = DB::table('termins')->select(DB::raw('sum(bpp + pengelolaan) as total'))->where('id_scholarship', $data['scholarship']->id)->first();
         $data['id'] = $id;
+
+        if($total->total==null || $total->total==0 || $total==""){
+          $data['total'] = 0;
+        } else {
+          $data['total'] = $total->total;
+        }
 
         return view('scholarship.create_termin',$data);
       } catch (DecryptException $e) {
@@ -495,7 +522,8 @@ class ScholarshipController extends Controller
       $mahasiswa = colleger::find($nim);
       $sem = $mahasiswa->semester;
       $hasil1 = $semester%2;
-      $hasil2 = substr($mahasiswa->nim,3,2)+$semester/2;
+      $hasil2 = (int)substr($mahasiswa->nim,3,2)+($semester/2)-(0.5);
+
       if($sem=='Ganjil') {
         $data['semester1'] = '1';
         if($hasil1==0){
@@ -513,6 +541,14 @@ class ScholarshipController extends Controller
       }
       $data['tahun1'] = "20".substr($mahasiswa->nim,3,2);
       $data['tahun2'] = "20".(int)$hasil2;
+
+      return $data;
+    }
+
+    public function getSemester($nim)
+    {
+      $data['mahasiswa'] = colleger::find($nim);
+
       return $data;
     }
 
@@ -531,5 +567,12 @@ class ScholarshipController extends Controller
       }
 
       return response()->json($colleger);
+    }
+
+    public function findBpp($id)
+    {
+      $data['bpp'] = source_of_scholarship::where('name',$id)->first();
+
+      return $data;
     }
 }

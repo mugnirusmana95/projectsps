@@ -9,6 +9,7 @@ use Session;
 use Crypt;
 use DB;
 use Illuminate\Contracts\Encryption\DecryptException;
+use Excel;
 
 class BppprodiController extends Controller
 {
@@ -33,20 +34,22 @@ class BppprodiController extends Controller
       $this->validate($request,[
         'prodi' => 'required',
         'year' => 'required',
-        'bpp' => 'required'
+        'bpp' => 'required',
+        'sks' => 'required'
       ],[
         'prodi.required' => 'Field wajib dipilih',
         'year.required' => 'Field wajib dipilih',
-        'bpp.required' => 'Field wajib diisi'
+        'bpp.required' => 'Field wajib diisi',
+        'sks.required' => 'Field wajib diisi'
       ]);
 
       $bppp = new bpp_prodi();
 
-      $prodi = bpp_prodi::where('prodi',$request->prodi)->where('year',$request->year)->first();
+      $prodi = bpp_prodi::with('prody')->where('prodi_id',$request->prodi)->where('year',$request->year)->first();
 
       if(count($prodi)>0) {
 
-        session::flash('warning','Prodi '.$request->prodi.' tahun '.$request->year.' sudah diinputkan.');
+        session::flash('warning','Prodi '.$prodi->prodi_id.'-'.$prodi->prody->nama_prodi.'-'.$prodi->prody->strata.' tahun '.$request->year.' sudah diinputkan (Rp '.number_format($prodi->bpp,0,'.','.').').');
 
         return back();
 
@@ -71,7 +74,7 @@ class BppprodiController extends Controller
     {
       $data['bpp'] = bpp_prodi::find(crypt::decrypt($id));
 
-      $data['prodi'] = studie::orderBy('name')->get();
+      $data['prodi'] = studie::orderBy('nama_prodi')->get();
       $data['year'] = date('Y');
       $data['year2'] = $data['year']-20;
       $data['id'] = crypt::encrypt($data['bpp']->id);
@@ -84,11 +87,13 @@ class BppprodiController extends Controller
       $this->validate($request,[
         'prodi' => 'required',
         'year' => 'required',
-        'bpp' => 'required'
+        'bpp' => 'required',
+        'sks' => 'required'
       ],[
         'prodi.required' => 'Field wajib dipilih',
         'year.required' => 'Field wajib dipilih',
-        'bpp.required' => 'Field wajib diisi'
+        'bpp.required' => 'Field wajib diisi',
+        'sks.required' => 'Field wajib diisi'
       ]);
 
       $bpp = bpp_prodi::find(crypt::decrypt($id));
@@ -96,9 +101,10 @@ class BppprodiController extends Controller
       $bpp1 = explode(".",$request->bpp);
       $bpp2 = implode("",$bpp1);
 
-      $bpp->prodi = $request->prodi;
+      $bpp->prodi_id = $request->prodi;
       $bpp->year = $request->year;
       $bpp->bpp = $bpp2;
+      $bpp->sks = $request->sks;
       $bpp->save();
 
       Session::flash('success','Data berhasil diubah.');
@@ -113,5 +119,42 @@ class BppprodiController extends Controller
 
       Session::flash('success','Data berhasil dihapus.');
       return back();
+    }
+
+    public function createImport()
+    {
+      return view('bppp.import');
+    }
+
+    public function storeImport(Request $request)
+    {
+      $this->validate($request,[
+        'prodi' => 'required'
+      ],[
+        'prodi.required' => 'Field wajib diisi',
+      ]);
+
+      if($request->hasFile('prodi')){
+        $path = $request->file('prodi')->getRealPath();
+        $data = \Excel::load($path)->get();
+        if($data->count()){
+          foreach ($data as $key => $value) {
+            $prodi_list[] = [
+              'prodi_id' => (int)$value->prodi_id,
+              'year' => (int)$value->year,
+              'bpp' => (int)$value->bpp,
+            ];
+          }
+          if(!empty($prodi_list)){
+            bpp_prodi::insert($prodi_list);
+            Session::flash('success','Data berhasil di import');
+          }
+        }
+      } else {
+        Session::flash('warning','Data gagal di import');
+      }
+
+      return redirect('/master/bpp_prodi');
+
     }
 }

@@ -11,9 +11,9 @@ $(document).ready(function(){
       $('#termin').val(value.tagihan.termin)
       $('#tgl_tagihan').val(value.tagihan.date)
       $('#tgl_tempo').val(value.tagihan.date_end)
-      $('#tagihan').val(value.tagihan.tagihan.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."))
-      $('#pengelolaan').val(value.tagihan.pengelolaan.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."))
-      $('#bpp').val(value.tagihan.bpp.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."))
+      $('#tagihan').val(value.total.tagihan.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."))
+      $('#pengelolaan').val(value.total.pengelolaan.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."))
+      $('#bpp').val(value.total.bpp.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."))
     });
 
     $.get( "/pembayaran/id/search/"+val, function( value2 ) {

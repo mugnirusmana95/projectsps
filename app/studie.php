@@ -19,4 +19,9 @@ class studie extends Model
   {
     return $this->hasMany('App\bpp_prodi');
   }
+
+  public function colleger()
+  {
+      return $this->hasMany('App\colleger');
+  }
 }

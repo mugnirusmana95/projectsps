@@ -41,7 +41,7 @@
             <div class="alert alert-info alert-dismissible">
               <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
               <h4><i class="icon fa fa-info-circle"></i> Info!</h4>
-              Field dengan field (<span class="req">*</span>) wajib diisi.
+              Field dengan tanda (<span class="req">*</span>) wajib diisi.
             </div>
             @endif
 
@@ -117,6 +117,18 @@
               </div>
             </div>
 
+            <div class="form-group {{$errors->has('bpp') ? 'has-error' : ''}}">
+              <label for="bpp" class="col-md-2 control-label">BPP Per Mahasiswa</label>
+              <div class="col-md-8">
+                <input type="text" class="form-control" id='bpp' placeholder="BPP Per Mahasiswa" name="bpp" value="{{old('bpp')}}">
+                @if ($errors->has('bpp'))
+                <span class="help-block">
+                    {{$errors->first('bpp')}}
+                </span>
+                @endif
+              </div>
+            </div>
+
             <input type="hidden" class="form-control" id='bpp' placeholder="Total Beasiswa" name="bpp" value="{{old('bpp')}}">
 
           </div>
@@ -137,4 +149,8 @@
     </div>
   </div>
 </section>
+@endsection
+
+@section('js')
+@include('scholarship.script')
 @endsection

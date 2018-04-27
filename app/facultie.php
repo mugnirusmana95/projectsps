@@ -15,4 +15,9 @@ class facultie extends Model
   {
       return $this->hasMany('App\studie');
   }
+
+  public function colleger()
+  {
+      return $this->hasMany('App\colleger');
+  }
 }

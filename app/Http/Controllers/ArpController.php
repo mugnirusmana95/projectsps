@@ -96,6 +96,8 @@ class ArpController extends Controller
           $detail->year1 = $key->year1;
           $detail->chapter2 = $key->chapter2;
           $detail->year2 = $key->year2;
+          $detail->chapter3 = $key->chapter3;
+          $detail->year3 = $key->year3;
           $detail->total_sks = $key->total_sks;
           $detail->total_chapter = $key->total_chapter;
           $detail->pengelolaan = $key->pengelolaan;
@@ -227,7 +229,7 @@ class ArpController extends Controller
     public function searchTagihan($id)
     {
       $data['tagihan'] = account_receivable::find($id);
-      $data['bpp'] = DB::table('account_receivable_details')->select(DB::raw('sum(bpp) as bpp'))->where('id_ar', $data['tagihan']->id)->first();
+      $data['total'] = DB::table('account_receivable_details')->select(DB::raw('sum(bpp) as bpp, sum(pengelolaan) as pengelolaan, sum(bpp + pengelolaan + biaya_hidup + biaya_buku + biaya_penelitian) as tagihan'))->where('id_ar',$id)->first();
 
       return $data;
     }

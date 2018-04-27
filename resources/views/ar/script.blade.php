@@ -35,7 +35,7 @@ $(document).ready(function(){
     $.get( "/tagihan/total/search/"+val2, function( value ) {
       $('#termin2').val(value.tagihan.name)
       $('#termin3').val(value.tagihan.id)
-      $('#tagihan').val(value.bpp.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."))
+      $('#tagihan').val(value.bpp)
       $('#pengelolaan').val(value.tagihan.pengelolaan.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."))
       $('#tgl').val(value.tagihan.date)
       $('#tempo').val(value.tagihan.date_end)
